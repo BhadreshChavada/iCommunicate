@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">iCommunicate</string>
+
+
+    <string name="icommunicate_world">iCommunicate.World</string>
+    <string name="freedom_to_connect">Freedom To Connect</string>
+    <!--menu-->
+    <string name="menu_contact">Contacts</string>
+    <string name="menu_recent">Recent</string>
+    <string name="menu_keypad">Keypad</string>
+    <string name="menu_message">Message</string>
+    <string name="menu_more">More</string>
+    <string name="enter_email_address">Enter email address</string>
+    <string name="enter_password">Enter password</string>
+    <string name="txt_sing_in">Sign In</string>
+    <string name="txt_forgot_password">Forgot Password?</string>
+    <string name="turn_speaker_on">Speaker ON</string>
+    <string name="callee">client identity or phone number</string>
+    <string name="answer">Answer</string>
+    <string name="decline">Decline</string>
+    <string name="callHint">Dial a client name or phone number. Leaving the field empty results in an automated response.</string>
+    <string name="network_not_available">Please check your internet connection</string>
+
+    <string name="blank_email">Please enter email address.</string>
+    <string name="valid_email">Please enter valid email address.</string>
+    <string name="blank_password">Please enter password.</string>
+    <string name="txt_forgot_pass">Submit</string>
+    <string name="txt_logout">Are you sure want to logout from the application?</string>
+    <string name="txt_share_contact">Share card</string>
+
+    <array name="contact_tab_array">
+        <item>Contacts</item>
+        <item>Favorites</item>
+    </array>
+
+    <array name="recent_tab_array">
+        <item>All</item>
+        <item>Missed</item>
+    </array>
+    <!--    <string name="allow_communicaton">Allow iCommunicate\n - To make and receive calls\n - To access your contact list\n - To access photos, media and files on your device\n - To record audio</string>-->
+    <!--    <string name="allow_communicaton">\n\u2022 He has been Chairman of CFL Manufacturers Committee of ELCOMA, the All India Association of Lighting Equipment Manufacturers.-->
+    <!--\n\u2022 He has been the President of Federation of Industries of India (FII).</string>-->
+
+    <string name="allow_communicaton">
+    <ul>
+        <b>Allow iCommunicate</b>\n\n
+        - To make and receive calls.\n
+        - To access your contact list.\n
+        - To access photos, media and files on your device.\n
+    </ul>
+</string>
+    <string name="website_link">http://www.iCommunicate.com</string>
+    <string name="enter_old_pwd">Enter Your Old Password</string>
+    <string name="enter_new_pwd">Enter New Password</string>
+    <string name="enter_confirm">Enter Confirm Password</string>
+    <string name="VALEDATE_OLD_PASSWORD">Please enter old password.</string>
+    <string name="VALEDATE_NEW_PASSWORD">Please enter new password.</string>
+    <string name="VALEDATE_PASSWORD_NOT_SAME">Your new password can not be same as login password.</string>
+    <string name="VALEDATE_PASSWORD_OLD_NEW_NOT_MATCH">Old password and new password can not be same.</string>
+    <string name="VALEDATE_CONFORM_PASSWORD">Please enter confirm password.</string>
+    <string name="VALEDATE_PASSWORD_NOT_MATCH">Your confirm password is not match.</string>
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/display"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/display_background_color"
+    android:orientation="vertical"
+    android:visibility="invisible">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/formula"
+        style="@style/DisplayEditTextStyle.Formula"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center"
+        android:maxLength="13"
+        android:inputType="text|textNoSuggestions"
+        android:textColorHint="@color/gray" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Add Number"
+        android:textColor="@color/app_orange"
+        android:textSize="@dimen/_13sdp" />
+
+</LinearLayout>

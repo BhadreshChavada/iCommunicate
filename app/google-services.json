@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "667289050575",
+    "firebase_url": "https://icommunicate-64d58.firebaseio.com",
+    "project_id": "icommunicate-64d58",
+    "storage_bucket": "icommunicate-64d58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667289050575:android:85f405556ae72a9a72c6ba",
+        "android_client_info": {
+          "package_name": "com.icommunicate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667289050575-i4kspbstid7nrujrkknu2mb572tef29t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1-_rUPUDZU5uiEzlBb5WIu_XkxnKdQDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667289050575-i4kspbstid7nrujrkknu2mb572tef29t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

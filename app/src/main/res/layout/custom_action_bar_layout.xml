@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAccent"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/_45sdp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_action_back"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginLeft="@dimen/_7sdp"
+            android:tint="@color/white"
+            android:visibility="gone"
+            android:src="@drawable/ic_return"
+ />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/action_bar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_action_done"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/_7sdp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_done" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/custom_action_bar_layout"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:weightSum=".75">
+
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                    android:id="@+id/segmented_control"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_weight=".5"
+                    app:columnCount="3"
+                    app:distributeEvenly="true"
+                    app:focusedBackgroundColor="@color/app_blue"
+                    app:radius="@dimen/_5sdp"
+                    app:segments="@array/contact_tab_array"
+                    app:selectedBackgroundColor="@color/app_orange"
+                    app:selectedTextColor="@color/white"
+                    app:textSize="@dimen/_13sdp"
+                    app:textVerticalPadding="@dimen/_6sdp"
+                    app:unSelectedBackgroundColor="@color/app_blue"
+                    app:unSelectedTextColor="@color/white" />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_add_contact"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="right"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingRight="@dimen/_5sdp"
+                android:src="@drawable/ic_plus" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@drawable/ic_search_border">
+
+            <include layout="@layout/custom_search_view" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
+                android:id="@+id/recyclerview_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtNoData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
+                android:text="Contacts Not Found."
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/_12sdp"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+</LinearLayout>

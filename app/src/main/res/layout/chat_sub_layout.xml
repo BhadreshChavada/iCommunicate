@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_chat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/s_scrn_chat_list_padding_btm"
+        app:layoutManager="LinearLayoutManager" />
+
+
+    <LinearLayout
+        android:id="@+id/bottomlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="@drawable/chat_input_edittext_back"
+            android:backgroundTint="#F8F8F8"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/edit_text_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_vertical"
+                android:layout_marginLeft="12dp"
+                android:background="@null"
+                android:hint="Type a message"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxHeight="50dp"
+                android:maxLength="2000"
+                android:minHeight="@dimen/s_scrn_chat_editbox_h"
+                android:textColor="@color/black"
+                android:textColorHint="#c4c0bd" />
+
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/send_msg_icon"
+            android:layout_width="@dimen/s_scrn_chat_send_btn"
+            android:layout_height="@dimen/s_scrn_chat_send_btn"
+            android:layout_gravity="bottom"
+            android:background="@drawable/ic_circle"
+            android:src="@drawable/input_send" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

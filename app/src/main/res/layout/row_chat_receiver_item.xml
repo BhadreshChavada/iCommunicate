@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_chat_recycleview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <FrameLayout
+        android:id="@+id/incoming_layout_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="60dp"
+        android:background="@drawable/incoming_normal"
+        android:backgroundTint="@color/app_orange"
+        android:minWidth="@dimen/s_scrn_chat_cell_w"
+        android:padding="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_time"
+            style="@style/chat_timings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:longClickable="false"
+            android:paddingTop="@dimen/s_scrn_chat_time_padding"
+            android:paddingRight="5dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/s_common_b" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_message"
+            style="@style/chat_text_message_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginBottom="6dp"
+            android:autoLink="web"
+            android:singleLine="false"
+            android:textColor="@color/white"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/s_common_a" />
+
+    </FrameLayout>
+
+</RelativeLayout>

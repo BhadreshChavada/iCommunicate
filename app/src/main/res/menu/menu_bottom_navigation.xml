@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/menu_contact"
+        android:title="@string/menu_contact" />
+
+    <item
+        android:id="@+id/navigation_private_league"
+        android:icon="@drawable/menu_keypad"
+        android:title="@string/menu_keypad" />
+
+    <item
+        android:id="@+id/navigation_create_league"
+        android:icon="@drawable/menu_recent"
+        android:title="@string/menu_recent" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/menu_message"
+        android:title="@string/menu_message" />
+
+    <item
+        android:id="@+id/navigation_menu"
+        android:icon="@drawable/menu_more"
+        android:title="@string/menu_more" />
+
+
+</menu>

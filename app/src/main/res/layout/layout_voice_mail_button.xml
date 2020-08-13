@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:elevation="5dp"
+        android:src="@drawable/ic_voicemail"
+        tools:ignore="ContentDescription"
+        tools:targetApi="lollipop" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/row_recent_call_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="VM"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp" />
+</LinearLayout>

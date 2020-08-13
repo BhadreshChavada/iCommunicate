@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#170846</color>
+    <color name="colorPrimaryDark">#170846</color>
+    <color name="colorAccent">#170846</color>
+
+
+
+    <color name="app_base_color">#8ABCD3</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="main_header_back_color">#F8F8F8</color>
+    <color name="dark_gray">#434343</color>
+    <color name="gray">#d3d3d3</color>
+    <color name="light_gray">#E5E5E5</color>
+    <color name="colorText">#FFFFFF</color>
+
+    <color name="yellow">#00574B</color>
+    <color name="light_yellow">#00574B</color>
+
+
+    <color name="green">#31A216</color>
+    <color name="red">#FF0000</color>
+    <color name="dotNormal">#B2B2AE</color>
+    <color name="dotHighlight">#F2D622</color>
+    <color name="cell_background">#E0E0E0</color>
+    <color name="orange">#D55113</color>
+
+    <color name="popup_transparent">#802f2f2f</color>
+    <!--
+     Sweet alert dialog colors
+    -->
+    <color name="red_btn_bg_color">#797979</color>
+    <color name="main_green_color">#170846</color>
+    <color name="simpletooltip_background">@color/colorAccent</color>
+    <color name="simpletooltip_text">@android:color/primary_text_light</color>
+    <color name="simpletooltip_arrow">@color/colorAccent</color>
+
+
+    <color name="color1">#0288d1</color>
+    <color name="color2">#4D469AFA</color>
+
+    <color name="dialpad_button_default">@android:color/transparent</color>
+    <color name="dialpad_button_pressed">@color/white</color>
+
+
+    <color name="display_background_color">#FFF</color>
+    <color name="display_formula_text_color">@color/colorAccent</color>
+
+    <color name="call_button_default">#00cc00</color>
+    <color name="call_button_pressed">#009900</color>
+
+    <color name="app_blue">#170846</color>
+    <color name="app_orange">#D55113</color>
+
+
+</resources>
