@@ -2,10 +2,12 @@ package com.icommunicate.common;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 
+import com.google.gson.Gson;
 import com.icommunicate.bean.ContactBean;
 
 import java.util.ArrayList;
@@ -63,6 +65,14 @@ public class FetchContacts extends AsyncTask<Void, Void, List<ContactBean>> {
 
             } while (cursor.moveToNext());
         }
+
+
+        SharedPreferences sharedpreferences = activity.getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("Contact", new Gson().toJson(contactList));
+        editor.commit();
+
+
         return contactList;
     }
 

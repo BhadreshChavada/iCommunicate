@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.icommunicate.R;
+import com.icommunicate.activity.MessageActivity;
 import com.icommunicate.adapter.RecentAdapter;
 import com.icommunicate.adapterActions.RecentAdapterListener;
 import com.icommunicate.apiCall.IResult;
 import com.icommunicate.apiCall.requestCall.ApiCallLogs;
-import com.icommunicate.apiCall.requestCall.ApiGetCallRecords;
 import com.icommunicate.apiCall.responseModels.CallRecordResponse;
 import com.icommunicate.apiCall.responseModels.LogsItem;
 import com.icommunicate.bean.RecentItem;
@@ -119,6 +119,7 @@ public class FragmentRecent extends BaseFragment {
             @Override
             public void selected(View v, int position) {
 
+                // TODO: 13/8/20 Redirect to the Call history screen
             }
         });
         recentRecycle.setAdapter(mAdapter);
@@ -130,6 +131,33 @@ public class FragmentRecent extends BaseFragment {
         SwipeHelper swipeHelper = new SwipeHelper(getActivity()) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        0,
+                        Color.parseColor("#FF9502"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                mAdapter.remove(pos);
+                                Toast.makeText(getActivity(), "Remove Successfully", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                ));
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Message",
+                        0,
+                        Color.parseColor("#C7C7CB"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                Intent intent = new Intent(getActivity(), MessageActivity.class);
+                                intent.putExtra("phoneNumber", recentItemArrayList.get(pos).getContactNumber());
+
+                                startActivity(intent);
+                            }
+                        }
+                ));
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Call",
                         0,
@@ -141,18 +169,6 @@ public class FragmentRecent extends BaseFragment {
                                 calling.putExtra("Name", recentItemArrayList.get(pos).getContactName());
                                 calling.putExtra("phoneNumber", recentItemArrayList.get(pos).getContactNumber());
                                 startActivity(calling);
-                            }
-                        }
-                ));
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Delete",
-                        0,
-                        Color.parseColor("#C7C7CB"),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                mAdapter.remove(pos);
-                                Toast.makeText(getActivity(), "Remove Successfully", Toast.LENGTH_LONG).show();
                             }
                         }
                 ));

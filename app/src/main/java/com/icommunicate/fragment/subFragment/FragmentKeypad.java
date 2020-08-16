@@ -1,13 +1,18 @@
 package com.icommunicate.fragment.subFragment;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -20,7 +25,6 @@ import com.icommunicate.R;
 import com.icommunicate.adapterActions.SelectNumberCallbackCallback;
 import com.icommunicate.apiCall.responseModels.defult_number.DefultNumberData;
 import com.icommunicate.apiCall.responseModels.defult_number.DefultNumberResponse;
-import com.icommunicate.bean.ContactBean;
 import com.icommunicate.common.CommonMethods;
 import com.icommunicate.common.dailog.SelectNumberDailog;
 import com.icommunicate.common.preferences.PreferenceUtil;
@@ -31,6 +35,7 @@ import com.sample.android.padlayout.PadLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +48,8 @@ public class FragmentKeypad extends BaseFragment {
     protected View root;
     @BindView(R.id.formula)
     AppCompatEditText formula;
+    @BindView(R.id.contactName)
+    TextView contactName;
     @BindView(R.id.display)
     LinearLayout display;
     @BindView(R.id.padLayout)
@@ -108,6 +115,7 @@ public class FragmentKeypad extends BaseFragment {
                 if (!CommonMethods.getValue(formula.getText().toString()).isEmpty()) {
                     Intent calling = new Intent(getContext(), VoiceActivityDuplicate.class);
                     calling.putExtra("phoneNumber", formula.getText().toString());
+                    calling.putExtra("Name", getContactName(getContext(), formula.getText().toString()));
                     startActivity(calling);
                 } else {
                     Toast.makeText(getActivity(), "Please dial the number.", Toast.LENGTH_SHORT).show();
@@ -179,11 +187,18 @@ public class FragmentKeypad extends BaseFragment {
             R.id.button12
     })
     void numberClick(View v) {
-        updateNumber(String.format(
+        String number = String.format(
                 "%s%s", String.valueOf(formula.getText()), ((DialPadKey) v).
+                        getNumberText());
 
-                        getNumberText())
-        );
+
+        updateNumber(number);
+
+        if (getContactName(getActivity(), number) != null) {
+            contactName.setText(getContactName(getActivity(), number));
+        } else {
+            contactName.setText("");
+        }
     }
 
     @OnLongClick({
@@ -205,6 +220,11 @@ public class FragmentKeypad extends BaseFragment {
             }
         }
         formula.setText(number);
+        if (getContactName(getActivity(), number) != null) {
+            contactName.setText(getContactName(getActivity(), number));
+        } else {
+            contactName.setText("");
+        }
     }
 
     public String getNumber() {
@@ -223,6 +243,12 @@ public class FragmentKeypad extends BaseFragment {
                     mNumber.substring(0, mNumber.length() - 1)
             );
         }
+
+        if (getContactName(getActivity(), mNumber) != null) {
+            contactName.setText(getContactName(getActivity(), mNumber));
+        } else {
+            contactName.setText("");
+        }
     }
 
     @OnLongClick({
@@ -230,9 +256,11 @@ public class FragmentKeypad extends BaseFragment {
     })
     public void onViewLongClicked() {
 
-        if (!formula.getText().toString().isEmpty()) {
+        if (!Objects.requireNonNull(formula.getText()).toString().isEmpty()) {
             formula.setText("");
+            contactName.setText("");
         }
+
     }
 
     @OnClick({R.id.dial_number, R.id.dial_arrow})
@@ -261,6 +289,32 @@ public class FragmentKeypad extends BaseFragment {
 
             }
         });
+    }
+
+    public static String getContactName(Context context, String phoneNumber) {
+        String contactName = "";
+        try {
+            ContentResolver cr = context.getContentResolver();
+            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+            Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+            if (cursor == null) {
+                return null;
+            }
+
+            if (cursor.moveToFirst()) {
+                contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+            }
+
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+
+            Log.d("NAme", String.valueOf(contactName));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return contactName;
     }
 
    /* void getNUmber() {

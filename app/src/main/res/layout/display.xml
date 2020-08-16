@@ -19,6 +19,8 @@
         android:inputType="text|textNoSuggestions"
         android:textColorHint="@color/gray" />
 
+
+
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,5 +28,17 @@
         android:text="Add Number"
         android:textColor="@color/app_orange"
         android:textSize="@dimen/_13sdp" />
+
+    <TextView
+        android:id="@+id/contactName"
+        style="@style/DisplayEditTextStyle.Formula"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center"
+        android:maxLength="20"
+        android:inputType="text|textNoSuggestions"
+        android:textColorHint="@color/gray" />
 
 </LinearLayout>

@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -38,9 +39,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.icommunicate.BuildConfig;
 import com.icommunicate.R;
+import com.icommunicate.apiCall.IResult;
+import com.icommunicate.apiCall.requestCall.ApiCallRecords;
+import com.icommunicate.apiCall.requestModels.CallRecordingRequest;
+import com.icommunicate.common.IntentUtils;
 import com.koushikdutta.ion.Ion;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.call.Recording;
 import com.twilio.voice.Call;
 import com.twilio.voice.CallException;
 import com.twilio.voice.CallInvite;
@@ -59,7 +62,7 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
 
     private static final String TAG = "VoiceActivityDuplicate";
     private static final String identity = "alice";
-    /*
+    /*x
      * You must provide the URL to the publicly accessible Twilio access token server route
      *
      * For example: https://myurl.io/accessToken
@@ -212,8 +215,18 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
             }
             if (bundle.containsKey("phoneNumber")) {
                 txtPhoneNumber = bundle.getString("phoneNumber");
-                params.put("to", txtPhoneNumber);
-                phoneNumber.setText(txtPhoneNumber);
+                if (txtPhoneNumber.startsWith("+")) {
+
+                    params.put("to", txtPhoneNumber);
+                    phoneNumber.setText(txtPhoneNumber);
+
+                } else {
+                    TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+                    String countryCodeValue = tm.getNetworkCountryIso();
+                    params.put("to", getCountryDialCode() + txtPhoneNumber);
+                    phoneNumber.setText(getCountryDialCode() + txtPhoneNumber);
+                }
+
                 ConnectOptions connectOptions = new ConnectOptions.Builder(accessToken)
                         .params(params)
                         .build();
@@ -223,6 +236,23 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
         }
     }
 
+    public String getCountryDialCode() {
+        String contryId = null;
+        String contryDialCode = null;
+
+        TelephonyManager telephonyMngr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+
+        contryId = telephonyMngr.getSimCountryIso().toUpperCase();
+        String[] arrContryCode = this.getResources().getStringArray(R.array.DialingCountryCode);
+        for (int i = 0; i < arrContryCode.length; i++) {
+            String[] arrDial = arrContryCode[i].split(",");
+            if (arrDial[1].trim().equals(contryId.trim())) {
+                contryDialCode = arrDial[0];
+                break;
+            }
+        }
+        return "+" + contryDialCode;
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -563,20 +593,21 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
             String ACCOUNT_SID = "AC4b79c7661e8938a314c04c0aa513cf49";
             String AUTH_TOKEN = "01c9c79425bee99bc1c76641e3894c6b";
 //
-            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-            Recording recording =
-                    Recording.creator(activeCall.getSid())
-                            .create();
-
-            Log.d("recordingId", recording.getSid());
+//            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+//            Recording recording =
+//                    Recording.creator(activeCall.getSid())
+//                            .create();
+//
+//            Log.d("recordingId", recording.getSid());
 
 //            https://api.twilio.com/2010-04-01/Accounts/ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Calls/CAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Recordings.json
 
 
 //            String url = "https://api.twilio.com/2010-04-01/Accounts/" + ACCOUNT_SID + "/Calls/" + activeCall.getSid() + "/Recordings.json";
 //
+//            url = ApiConstant.BASE_URL + "callRecording";
 //            Log.d("url", url);
-//                Ion.with(this).load(url)
+//            Ion.with(this).load(url)
 //                    .asString()
 //                    .setCallback((e, accessToken) -> {
 //                        if (e == null) {
@@ -592,6 +623,23 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
 //                        }
 //                    });
 
+
+            ApiCallRecords apiForgotPassword = new ApiCallRecords(this, new IResult() {
+                @Override
+                public void notifySuccess(String requestType, Object response) {
+                    if (response instanceof Boolean) {
+                        IntentUtils.finishActivity(VoiceActivityDuplicate.this);
+                    }
+                }
+
+                @Override
+                public void notifyNetworkSuccess(String requestType) {
+
+                }
+            });
+            CallRecordingRequest callRecordingRequest = new CallRecordingRequest();
+            callRecordingRequest.setCallId(activeCall.getSid());
+            apiForgotPassword.execute(callRecordingRequest);
 
         };
     }

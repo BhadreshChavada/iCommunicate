@@ -10,9 +10,9 @@ import com.icommunicate.R;
 import com.icommunicate.apiCall.IResult;
 import com.icommunicate.apiCall.RetroApi;
 import com.icommunicate.apiCall.ServiceGeneratorRetro;
-import com.icommunicate.apiCall.requestModels.LoginRequest;
+import com.icommunicate.apiCall.requestModels.CallRecordingRequest;
 import com.icommunicate.apiCall.responseModels.CallRecordResponse;
-import com.icommunicate.apiCall.responseModels.LoginResponse;
+import com.icommunicate.apiCall.responseModels.DefaultResponse;
 import com.icommunicate.common.CommonMethods;
 import com.icommunicate.common.KLog;
 
@@ -87,5 +87,6 @@ public class ApiGetCallRecords {
             Toast.makeText(mContext, mContext.getString(R.string.network_not_available), Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.icommunicate.apiCall;
 
+import com.icommunicate.apiCall.requestModels.CallRecordingRequest;
 import com.icommunicate.apiCall.requestModels.DefultNumberRequest;
 import com.icommunicate.apiCall.requestModels.FetchMessageRequest;
 import com.icommunicate.apiCall.requestModels.ForgotPasswordRequest;
@@ -41,7 +42,14 @@ public interface RetroApi {
     //Twilio send message
     @POST("/icoomunicate/users/sendMessage")
     @Headers({"Content-Type: application/json"})
+    Call<ResponseBody> callRecording(@Body CallRecordingRequest callRecordingRequest);
+
+    //Twilio send message
+    @POST("/icoomunicate/users/sendMessage")
+    @Headers({"Content-Type: application/json"})
     Call<ResponseBody> sendMessage(@Body SendMessageRequest sendMessageRequest);
+
+
 
     @POST("/icoomunicate/users/fetchMessages")
     @Headers({"Content-Type: application/json"})

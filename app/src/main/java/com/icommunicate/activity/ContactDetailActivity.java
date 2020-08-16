@@ -194,6 +194,7 @@ public class ContactDetailActivity extends AppCompatActivity {
 
         Intent calling = new Intent(this, VoiceActivityDuplicate.class);
         calling.putExtra("phoneNumber", contactBean.getPhone_number());
+        calling.putExtra("Name", contactBean.getName());
         startActivity(calling);
     }
 

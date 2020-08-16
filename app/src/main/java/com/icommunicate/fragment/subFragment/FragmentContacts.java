@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.icommunicate.R;
 import com.icommunicate.activity.ContactDetailActivity;
 import com.icommunicate.activity.MessageActivity;
@@ -226,25 +228,43 @@ public class FragmentContacts extends BaseFragment {
         contactBeans.add(new ContactBean("Mddy", ""));
         contactBeans.add(new ContactBean("Nddy", ""));*/
 
-        final ProgressDialog dialog = CommonMethods.showProgressBar(getActivity());
-        dialog.show();
-        new FetchContacts(getActivity(), new FetchContacts.OnContactFetchListener() {
-            @Override
-            public void onContactFetch(List<ContactBean> contacts) {
-                if (contacts != null) {
-                    Collections.sort(contacts, new Comparator<ContactBean>() {
-                        @Override
-                        public int compare(ContactBean o1, ContactBean o2) {
-                            return o1.getName().compareToIgnoreCase(o2.getName()); // To compare string values
-                        }
-                    });
-                    contactBeans.addAll(contacts);
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+        ArrayList<ContactBean> contactList = new Gson().fromJson(sharedpreferences.getString("Contact", null), new TypeToken<ArrayList<ContactBean>>() {
+        }.getType());
+        if (contactList != null) {
+            contactBeans.addAll(contactList);
+            Collections.sort(contactBeans, new Comparator<ContactBean>() {
+                @Override
+                public int compare(ContactBean s1, ContactBean s2) {
+                    return s1.getName().compareToIgnoreCase(s2.getName());
                 }
-                dialog.dismiss();
-                setContactAdapter(contactBeans);
-            }
-        }).execute();
+            });
+            setContactAdapter(contactBeans);
+
+
+        } else {
+            final ProgressDialog dialog = CommonMethods.showProgressBar(getActivity());
+            dialog.show();
+            new FetchContacts(getActivity(), new FetchContacts.OnContactFetchListener() {
+                @Override
+                public void onContactFetch(List<ContactBean> contacts) {
+                    if (contacts != null) {
+                        Collections.sort(contacts, new Comparator<ContactBean>() {
+                            @Override
+                            public int compare(ContactBean o1, ContactBean o2) {
+                                return o1.getName().compareToIgnoreCase(o2.getName()); // To compare string values
+                            }
+                        });
+                        contactBeans.addAll(contacts);
+                    }
+
+                    dialog.dismiss();
+                    setContactAdapter(contactBeans);
+                }
+            }).execute();
+        }
     }
+
 
     private void setContactAdapter(List<ContactBean> contactBeans) {
         if (contactBeans != null && contactBeans.size() > 0) {

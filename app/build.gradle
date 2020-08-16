@@ -59,10 +59,11 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
+        exclude "lib/arm64-v8a/librealm-jni.so"
     }
 
-    /* // Specify that we want to split up the APK based on ABI
-     splits {
+     // Specify that we want to split up the APK based on ABI
+    /* splits {
          abi {
              // Enable ABI split
              enable true
@@ -136,6 +137,7 @@ dependencies {
 
     implementation 'com.github.RobertApikyan:SegmentedControl:1.2.0'
     implementation 'org.apache.commons:commons-text:1.6'
+    implementation 'com.github.traex.rippleeffect:library:1.3'
 
 }
 apply plugin: 'com.google.gms.google-services'
