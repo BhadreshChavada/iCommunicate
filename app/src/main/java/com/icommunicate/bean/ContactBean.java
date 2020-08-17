@@ -49,6 +49,7 @@ public class ContactBean implements Parcelable {
         isSelectedbean = in.readByte() != 0;
         email = in.createStringArrayList();
         Numbers = in.createStringArrayList();
+
     }
 
     public static final Creator<ContactBean> CREATOR = new Creator<ContactBean>() {
@@ -135,6 +136,7 @@ public class ContactBean implements Parcelable {
         Numbers = numbers;
     }
 
+
     public String getContactId() {
         return contactId;
     }
@@ -174,4 +176,6 @@ public class ContactBean implements Parcelable {
         dest.writeStringList(email);
         dest.writeStringList(Numbers);
     }
+
+
 }

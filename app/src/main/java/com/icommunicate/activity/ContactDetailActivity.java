@@ -4,9 +4,11 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import com.icommunicate.common.IntentUtils;
 import com.icommunicate.twillio.VoiceActivityDuplicate;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +68,8 @@ public class ContactDetailActivity extends AppCompatActivity {
     @BindView(R.id.txtLocation)
     TextView location;
 
+    String address = "";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +99,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         if (getIntent().getParcelableExtra(ApiConstant.CONTACT) != null) {
             contactBean = getIntent().getParcelableExtra(ApiConstant.CONTACT);
             contactName.setText(CommonMethods.getValue(contactBean.getName()));
+            address = getAddress(contactBean.getLookupId());
 
             ArrayList<ContactDetailBean> contactDetailBeanArrayList = new ArrayList<>();
 //            for (int i = 0; i < contactBean.getNumbers().size(); i++) {
@@ -105,14 +111,18 @@ public class ContactDetailActivity extends AppCompatActivity {
                 email.setVisibility(View.VISIBLE);
                 emailDetailBeanArrayList.add(new ContactDetailBean(contactBean.getEmail().get(i), "WORK", R.drawable.ic_email_black, 0));
             }
-            ArrayList<ContactDetailBean> addDetailBeanArrayList = new ArrayList<>();
-            addDetailBeanArrayList.add(new ContactDetailBean("Not Found", "WORK", R.drawable.ic_location_on_black, R.drawable.ic_directions_black));
 
             ArrayList<ContactDetailBean> companyBeanArrayList = new ArrayList<>();
-            companyBeanArrayList.add(new ContactDetailBean("iCommunicate", "Not Found", R.drawable.ic_company_black, R.drawable.ic_directions_black));
+            companyBeanArrayList.add(new ContactDetailBean("Location", address, R.drawable.ic_company_black, R.drawable.ic_directions_black));
 
             addressDetailLnr.setVisibility(View.GONE);
+            if (address.trim().length() > 0) {
+                addressDetailLnr.setVisibility(View.VISIBLE);
+                location.setVisibility(View.VISIBLE);
+            }
+
             workPlaceDetailLnr.setVisibility(View.GONE);
+
 
             for (int i = 0; i < contactDetailBeanArrayList.size(); i++) {
                 contactDetailLnr.addView(dynamicAddLinearLayout(contactDetailBeanArrayList.get(i)));
@@ -123,14 +133,12 @@ public class ContactDetailActivity extends AppCompatActivity {
                 emailDetailLnr.addView(dynamicAddLinearLayout(emailDetailBeanArrayList.get(i)));
             }
 
-            for (int i = 0; i < addDetailBeanArrayList.size(); i++) {
-                addressDetailLnr.addView(dynamicAddLinearLayout(addDetailBeanArrayList.get(i)));
-            }
 
             for (int i = 0; i < companyBeanArrayList.size(); i++) {
-                workPlaceDetailLnr.addView(dynamicAddLinearLayout(companyBeanArrayList.get(i)));
+                addressDetailLnr.addView(dynamicAddLinearLayout(companyBeanArrayList.get(i)));
             }
         }
+
 
     }
 
@@ -210,11 +218,11 @@ public class ContactDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.txtLocation)
     public void locationClicked() {
-//        String map = "http://maps.google.co.in/maps?q=" + contactBean.get;
-//
-//        String uri = String.format(Locale.ENGLISH, map);
-//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-//        startActivity(intent);
+        String map = "http://maps.google.co.in/maps?q=" + address;
+
+        String uri = String.format(Locale.ENGLISH, map);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        startActivity(intent);
     }
 
     @OnClick(R.id.btn_favorite_contact)
@@ -226,4 +234,68 @@ public class ContactDetailActivity extends AppCompatActivity {
         Toast.makeText(this, "Contact saved as Favourites", Toast.LENGTH_SHORT).show();
     }
 
+
+    String getAddress(String id) {
+
+        String tempAddress = "";
+        Uri URI_ADDRESS = ContactsContract.Data.CONTENT_URI;
+        String SELECTION_ADDRESS = ContactsContract.Data.LOOKUP_KEY
+                + " = ? AND " + ContactsContract.Data.MIMETYPE
+                + " = ?";
+        String[] SELECTION_ARRAY_ADDRESS = new String[]{
+                id,
+                ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE};
+
+        Cursor currAddr = this.getContentResolver().query(URI_ADDRESS, null, SELECTION_ADDRESS, SELECTION_ARRAY_ADDRESS, null);
+        int indexAddType = currAddr
+                .getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE);
+        int indexStreet = currAddr
+                .getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET);
+        int indexPOBox = currAddr
+                .getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POBOX);
+        int indexNeighbor = currAddr
+                .getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.NEIGHBORHOOD);
+        int indexCity = currAddr
+                .getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY);
+        int indexRegion = currAddr
+                .getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION);
+        int indexPostCode = currAddr
+                .getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE);
+        int indexCountry = currAddr
+                .getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY);
+
+        if (currAddr.getCount() > 0) {
+
+            while (currAddr.moveToNext()) {
+
+
+                if (currAddr.getString(indexStreet) != null) {
+                    tempAddress = currAddr.getString(indexStreet);
+                }
+
+                if (currAddr.getString(indexPOBox) != null) {
+                    tempAddress += " " + currAddr.getString(indexPOBox);
+                }
+
+                if (currAddr.getString(indexCity) != null) {
+                    tempAddress += " " + currAddr.getString(indexCity);
+                }
+
+                if (currAddr.getString(indexRegion) != null) {
+                    tempAddress += " " + currAddr.getString(indexRegion);
+                }
+
+                if (currAddr.getString(indexCountry) != null) {
+                    tempAddress += " " + currAddr.getString(indexCountry);
+                }
+
+
+                Log.d("Address", tempAddress);
+            }
+
+
+        }
+        currAddr.close();
+        return tempAddress.trim();
+    }
 }

@@ -501,6 +501,8 @@ public class FragmentContacts extends BaseFragment {
                             emailList.add(emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
                         }
                         emailCur.close();
+
+
                         contactBeans.add(new ContactBean(dummyId + "", contactName, contactNumber, "1", emailList, contactId, lookupId));
                         break;
                     }
