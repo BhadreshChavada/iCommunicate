@@ -212,6 +212,9 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
             if (bundle.containsKey("Name")) {
                 name = bundle.getString("Name");
                 contactName.setText(name);
+                params.put("name", name);
+            } else {
+                params.put("name", phoneNumber.toString());
             }
             if (bundle.containsKey("phoneNumber")) {
                 txtPhoneNumber = bundle.getString("phoneNumber");
@@ -222,7 +225,7 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
 
                 } else {
                     TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-                    String countryCodeValue = tm.getNetworkCountryIso();
+//                    String countryCodeValue = tm.getNetworkCountryIso();
                     params.put("to", getCountryDialCode() + txtPhoneNumber);
                     phoneNumber.setText(getCountryDialCode() + txtPhoneNumber);
                 }
@@ -288,6 +291,8 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
         };
     }
 
+    private String callSid = "";
+
     private Call.Listener callListener() {
         return new Call.Listener() {
             /*
@@ -343,6 +348,8 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
                 }
                 Log.d(TAG, "Connected");
                 activeCall = call;
+                callSid = call.getSid();
+                recordCall.setClickable(true);
 
                 Log.d("CALL", call.getSid());
             }
@@ -624,7 +631,7 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
 //                    });
 
 
-            ApiCallRecords apiForgotPassword = new ApiCallRecords(this, new IResult() {
+            ApiCallRecords callRecords = new ApiCallRecords(this, new IResult() {
                 @Override
                 public void notifySuccess(String requestType, Object response) {
                     if (response instanceof Boolean) {
@@ -638,8 +645,8 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
                 }
             });
             CallRecordingRequest callRecordingRequest = new CallRecordingRequest();
-            callRecordingRequest.setCallId(activeCall.getSid());
-            apiForgotPassword.execute(callRecordingRequest);
+            callRecordingRequest.setCallId(callSid);
+            callRecords.execute(callRecordingRequest);
 
         };
     }

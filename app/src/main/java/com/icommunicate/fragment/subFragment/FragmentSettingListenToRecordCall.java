@@ -129,7 +129,7 @@ public class FragmentSettingListenToRecordCall extends BaseFragment {
                                             CommonMethods.getValue(logsItem.getFromFormatted()),
                                             logsItem.getDirection().contains("inbound") ? 2 : 1,
                                             CommonMethods.getValue(logsItem.getDuration()),
-                                            logsItem.getDateCreated().getDate()
+                                            logsItem.getDateCreated().getDate(),logsItem.getSid()
                                     ));
                                 }
                             }

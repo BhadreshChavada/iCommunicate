@@ -21,8 +21,11 @@ import com.icommunicate.adapter.RecentAdapter;
 import com.icommunicate.adapterActions.RecentAdapterListener;
 import com.icommunicate.apiCall.IResult;
 import com.icommunicate.apiCall.requestCall.ApiCallLogs;
+import com.icommunicate.apiCall.requestCall.ApiDeleteCallLogs;
+import com.icommunicate.apiCall.requestModels.DeleteCallLogRequest;
 import com.icommunicate.apiCall.responseModels.CallRecordResponse;
 import com.icommunicate.apiCall.responseModels.LogsItem;
+import com.icommunicate.apiCall.responseModels.SuccessResponse;
 import com.icommunicate.bean.RecentItem;
 import com.icommunicate.common.CommonMethods;
 import com.icommunicate.common.swipeRecyclerview.SwipeHelper;
@@ -139,8 +142,30 @@ public class FragmentRecent extends BaseFragment {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                mAdapter.remove(pos);
-                                Toast.makeText(getActivity(), "Remove Successfully", Toast.LENGTH_LONG).show();
+//
+                                ApiDeleteCallLogs apiDeleteLog = new ApiDeleteCallLogs(getActivity(), new IResult() {
+                                    @Override
+                                    public void notifySuccess(String requestType, Object response) {
+                                        if (response instanceof SuccessResponse) {
+                                            SuccessResponse successResponse = (SuccessResponse) response;
+                                            if (successResponse.isError()) {
+                                                Toast.makeText(getActivity(), "" + successResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                mAdapter.remove(pos);
+                                                Toast.makeText(getActivity(), successResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void notifyNetworkSuccess(String requestType) {
+
+                                    }
+                                });
+                                DeleteCallLogRequest deleteCallLogRequest = new DeleteCallLogRequest();
+                                deleteCallLogRequest.setCallId(recentItemArrayList.get(pos).getsID());
+                                apiDeleteLog.execute(deleteCallLogRequest);
                             }
                         }
                 ));
@@ -196,7 +221,7 @@ public class FragmentRecent extends BaseFragment {
                                             CommonMethods.getValue(logsItem.getFromFormatted()),
                                             logsItem.getDirection().contains("inbound") ? 2 : 1,
                                             CommonMethods.getValue(logsItem.getDuration()),
-                                            logsItem.getDateCreated().getDate()
+                                            logsItem.getDateCreated().getDate(), logsItem.getSid()
                                     ));
                                 }
                             }

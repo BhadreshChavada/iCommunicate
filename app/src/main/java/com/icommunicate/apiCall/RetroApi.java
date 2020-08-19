@@ -2,6 +2,7 @@ package com.icommunicate.apiCall;
 
 import com.icommunicate.apiCall.requestModels.CallRecordingRequest;
 import com.icommunicate.apiCall.requestModels.DefultNumberRequest;
+import com.icommunicate.apiCall.requestModels.DeleteCallLogRequest;
 import com.icommunicate.apiCall.requestModels.FetchMessageRequest;
 import com.icommunicate.apiCall.requestModels.ForgotPasswordRequest;
 import com.icommunicate.apiCall.requestModels.LoginRequest;
@@ -15,7 +16,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * Ashish parmar
@@ -39,16 +39,17 @@ public interface RetroApi {
     @Headers({"Content-Type: application/json"})
     Call<ResponseBody> getCallRecord();
 
-    //Twilio send message
-    @POST("/icoomunicate/users/sendMessage")
+    @POST("/icoomunicate/users/callRecording")
     @Headers({"Content-Type: application/json"})
     Call<ResponseBody> callRecording(@Body CallRecordingRequest callRecordingRequest);
 
-    //Twilio send message
+    @POST("/icoomunicate/users/deleteCallResource")
+    @Headers({"Content-Type: application/json"})
+    Call<ResponseBody> deleteCallRecord(@Body DeleteCallLogRequest deleteCallLogRequest);
+
     @POST("/icoomunicate/users/sendMessage")
     @Headers({"Content-Type: application/json"})
     Call<ResponseBody> sendMessage(@Body SendMessageRequest sendMessageRequest);
-
 
 
     @POST("/icoomunicate/users/fetchMessages")

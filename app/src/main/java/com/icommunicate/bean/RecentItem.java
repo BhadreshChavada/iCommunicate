@@ -6,16 +6,18 @@ public class RecentItem {
     int callStatus;
     String callDuration;
     String callCreated;
+    String sID;
 
     public RecentItem() {
     }
 
-    public RecentItem(String contactName, String contactNumber, int callStatus, String callDuration,String callCreated) {
+    public RecentItem(String contactName, String contactNumber, int callStatus, String callDuration,String callCreated,String sID) {
         this.contactName = contactName;
         this.contactNumber = contactNumber;
         this.callStatus = callStatus;
         this.callDuration = callDuration;
         this.callCreated = callCreated;
+        this.sID = sID;
     }
 
     public String getContactName() {
@@ -56,5 +58,13 @@ public class RecentItem {
 
     public void setCallCreated(String callCreated) {
         this.callCreated = callCreated;
+    }
+
+    public String getsID() {
+        return sID;
+    }
+
+    public void setsID(String sID) {
+        this.sID = sID;
     }
 }
