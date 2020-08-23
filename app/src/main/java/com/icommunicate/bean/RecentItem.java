@@ -1,22 +1,28 @@
 package com.icommunicate.bean;
 
-public class RecentItem {
+import java.io.Serializable;
+
+public class RecentItem implements Serializable {
     String contactName;
-    String contactNumber;
+    String toNumber;
     int callStatus;
     String callDuration;
     String callCreated;
     String sID;
+    String fromNumber;
+    String displayNumber;
 
     public RecentItem() {
     }
 
-    public RecentItem(String contactName, String contactNumber, int callStatus, String callDuration,String callCreated,String sID) {
+    public RecentItem(String contactName, String displayNumber, String toNumber, String fromNumber, int callStatus, String callDuration, String callCreated, String sID) {
         this.contactName = contactName;
-        this.contactNumber = contactNumber;
+        this.fromNumber = fromNumber;
+        this.toNumber = toNumber;
         this.callStatus = callStatus;
         this.callDuration = callDuration;
         this.callCreated = callCreated;
+        this.displayNumber = displayNumber;
         this.sID = sID;
     }
 
@@ -28,12 +34,20 @@ public class RecentItem {
         this.contactName = contactName;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
+    public String getToNumber() {
+        return toNumber;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setToNumber(String toNumber) {
+        this.toNumber = toNumber;
+    }
+
+    public String getFromNumber() {
+        return fromNumber;
+    }
+
+    public void setFromNumber(String fromNumber) {
+        this.fromNumber = fromNumber;
     }
 
     public int getCallStatus() {
@@ -66,5 +80,13 @@ public class RecentItem {
 
     public void setsID(String sID) {
         this.sID = sID;
+    }
+
+    public String getDisplayNumber() {
+        return displayNumber;
+    }
+
+    public void setDisplayNumber(String displayNumber) {
+        this.displayNumber = displayNumber;
     }
 }

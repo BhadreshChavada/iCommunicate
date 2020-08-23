@@ -1,5 +1,6 @@
 package com.icommunicate.apiCall;
 
+import com.icommunicate.apiCall.requestModels.CallHistory;
 import com.icommunicate.apiCall.requestModels.CallRecordingRequest;
 import com.icommunicate.apiCall.requestModels.DefultNumberRequest;
 import com.icommunicate.apiCall.requestModels.DeleteCallLogRequest;
@@ -68,4 +69,8 @@ public interface RetroApi {
     @POST("icoomunicate/users/callLogs")
     @Headers({"Content-Type: application/json"})
     Call<ResponseBody> getCallLogs();
+
+    @POST("icoomunicate/users//callLogsTwoNumber")
+    @Headers({"Content-Type: application/json"})
+    Call<ResponseBody> getCallHistory(@Body CallHistory callHistory);
 }

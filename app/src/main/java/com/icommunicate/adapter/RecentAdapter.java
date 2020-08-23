@@ -82,8 +82,10 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.MyViewHold
                 holder.rowRecentCallType.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_call_missed_outgoing));
                 break;
         }
+
+
         holder.rowRecentContactName.setText(question.getContactName());
-        holder.rowRecentContactNumber.setText(question.getContactNumber());
+        holder.rowRecentContactNumber.setText(question.getDisplayNumber());
 
         holder.rowRecentCallDate.setText(DateUtil.setUpDate(question.getCallCreated()));
         holder.rowRecentCallTime.setText(DateUtil.setUpTime(question.getCallCreated()));

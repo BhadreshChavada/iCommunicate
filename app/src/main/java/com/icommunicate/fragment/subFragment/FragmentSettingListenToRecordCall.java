@@ -2,7 +2,6 @@ package com.icommunicate.fragment.subFragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,11 +124,12 @@ public class FragmentSettingListenToRecordCall extends BaseFragment {
                                 for (int i = 0; i < logsItemList.size(); i++) {
                                     LogsItem logsItem = logsItemList.get(i);
                                     recentItemArrayList.add(new RecentItem(
-                                            "Twillio-Number",
+                                            logsItem.getCallerName(),
                                             CommonMethods.getValue(logsItem.getFromFormatted()),
+                                            logsItem.getFrom(), logsItem.getTo(),
                                             logsItem.getDirection().contains("inbound") ? 2 : 1,
                                             CommonMethods.getValue(logsItem.getDuration()),
-                                            logsItem.getDateCreated().getDate(),logsItem.getSid()
+                                            logsItem.getDateCreated().getDate(), logsItem.getSid()
                                     ));
                                 }
                             }

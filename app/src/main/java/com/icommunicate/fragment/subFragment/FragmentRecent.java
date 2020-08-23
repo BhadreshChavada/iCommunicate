@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.icommunicate.R;
+import com.icommunicate.activity.CallDetailsActivity;
 import com.icommunicate.activity.MessageActivity;
 import com.icommunicate.adapter.RecentAdapter;
 import com.icommunicate.adapterActions.RecentAdapterListener;
+import com.icommunicate.apiCall.ApiConstant;
 import com.icommunicate.apiCall.IResult;
 import com.icommunicate.apiCall.requestCall.ApiCallLogs;
 import com.icommunicate.apiCall.requestCall.ApiDeleteCallLogs;
@@ -28,6 +30,7 @@ import com.icommunicate.apiCall.responseModels.LogsItem;
 import com.icommunicate.apiCall.responseModels.SuccessResponse;
 import com.icommunicate.bean.RecentItem;
 import com.icommunicate.common.CommonMethods;
+import com.icommunicate.common.IntentUtils;
 import com.icommunicate.common.swipeRecyclerview.SwipeHelper;
 import com.icommunicate.fragment.BaseFragment;
 import com.icommunicate.twillio.VoiceActivityDuplicate;
@@ -122,7 +125,9 @@ public class FragmentRecent extends BaseFragment {
             @Override
             public void selected(View v, int position) {
 
-                // TODO: 13/8/20 Redirect to the Call history screen
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ApiConstant.CALLLOG, recentItemArrayList.get(position));
+                IntentUtils.redirectToWithBundle(getContext(), CallDetailsActivity.class, bundle);
             }
         });
         recentRecycle.setAdapter(mAdapter);
@@ -177,7 +182,7 @@ public class FragmentRecent extends BaseFragment {
                             @Override
                             public void onClick(int pos) {
                                 Intent intent = new Intent(getActivity(), MessageActivity.class);
-                                intent.putExtra("phoneNumber", recentItemArrayList.get(pos).getContactNumber());
+                                intent.putExtra("phoneNumber", recentItemArrayList.get(pos).getToNumber());
 
                                 startActivity(intent);
                             }
@@ -192,7 +197,7 @@ public class FragmentRecent extends BaseFragment {
                             public void onClick(int pos) {
                                 Intent calling = new Intent(getContext(), VoiceActivityDuplicate.class);
                                 calling.putExtra("Name", recentItemArrayList.get(pos).getContactName());
-                                calling.putExtra("phoneNumber", recentItemArrayList.get(pos).getContactNumber());
+                                calling.putExtra("phoneNumber", recentItemArrayList.get(pos).getToNumber());
                                 startActivity(calling);
                             }
                         }
@@ -216,13 +221,15 @@ public class FragmentRecent extends BaseFragment {
                             if (logsItemList.size() > 0) {
                                 for (int i = 0; i < logsItemList.size(); i++) {
                                     LogsItem logsItem = logsItemList.get(i);
-                                    recentItemArrayList.add(new RecentItem(
-                                            "Twillio-Number",
-                                            CommonMethods.getValue(logsItem.getFromFormatted()),
-                                            logsItem.getDirection().contains("inbound") ? 2 : 1,
-                                            CommonMethods.getValue(logsItem.getDuration()),
-                                            logsItem.getDateCreated().getDate(), logsItem.getSid()
-                                    ));
+                                    if (logsItem.getToFormatted().trim().length() > 0 && logsItem.getFromFormatted().trim().length() > 0)
+                                        recentItemArrayList.add(new RecentItem(
+                                                logsItem.getCallerName(),
+                                                CommonMethods.getValue(logsItem.getFromFormatted()),
+                                                logsItem.getFrom(), logsItem.getTo(),
+                                                logsItem.getDirection().contains("inbound") ? 2 : 1,
+                                                CommonMethods.getValue(logsItem.getDuration()),
+                                                logsItem.getDateCreated().getDate(), logsItem.getSid()
+                                        ));
                                 }
                             }
                         }

@@ -212,7 +212,8 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
             if (bundle.containsKey("Name")) {
                 name = bundle.getString("Name");
                 contactName.setText(name);
-                params.put("name", name);
+                if (name != null)
+                    params.put("name", name);
             } else {
                 params.put("name", phoneNumber.toString());
             }
