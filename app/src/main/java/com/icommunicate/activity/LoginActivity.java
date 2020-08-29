@@ -1,9 +1,11 @@
 package com.icommunicate.activity;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +21,6 @@ import com.icommunicate.common.IntentUtils;
 import com.icommunicate.common.KeyboardUtils;
 import com.icommunicate.common.dailog.PermisionAllowDialog;
 import com.icommunicate.common.preferences.PreferenceUtil;
-
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     AppCompatButton btnLogin;
     @BindView(R.id.btn_forgot_password)
     AppCompatButton btnForgotPassword;
+    @BindView(R.id.txtRegistration)
+    TextView txtRegistration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        String firstString = getColoredSpanned("Think Global Act Local - ", "#00023b");
+        String secondString = getColoredSpanned("Create Account", "#c92800");
+
+        txtRegistration.setText(Html.fromHtml(firstString + secondString));
+    }
+
+
+    private String getColoredSpanned(String text, String color) {
+        String input = "<font color=" + color + ">" + text + "</font>";
+        return input;
     }
 
     @Override

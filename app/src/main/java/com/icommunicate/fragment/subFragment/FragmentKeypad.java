@@ -279,6 +279,7 @@ public class FragmentKeypad extends BaseFragment {
         SelectNumberDailog.show(defultNumberData, getFragmentManager(), new SelectNumberCallbackCallback() {
             @Override
             public void onClick(View view, int position) {
+
                 dialNumber.setText(defultNumberData.get(position).getNumber());
                 defultNumberData.get(position).setSelected(true);
                 PreferenceUtil.byDefultDailNumber().set(defultNumberData.get(position).getNumber());

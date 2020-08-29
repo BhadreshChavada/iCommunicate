@@ -108,5 +108,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/txtRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:backgroundTint="@color/white"
+        android:drawableTint="@color/orange"
+        android:gravity="center"
+        android:textColor="@color/app_blue" />
 
 </FrameLayout>

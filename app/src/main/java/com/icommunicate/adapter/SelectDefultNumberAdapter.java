@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.CheckBox;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +13,7 @@ import com.icommunicate.R;
 import com.icommunicate.adapterActions.SelectNumberCallbackCallback;
 import com.icommunicate.apiCall.responseModels.defult_number.DefultNumberData;
 import com.icommunicate.common.CommonMethods;
+import com.icommunicate.common.preferences.PreferenceUtil;
 
 import java.util.List;
 
@@ -36,6 +37,8 @@ public class SelectDefultNumberAdapter extends RecyclerView.Adapter<SelectDefult
         AppCompatTextView dialName;
         @BindView(R.id.dial_number)
         AppCompatTextView dialNumber;
+        @BindView(R.id.dial_isSelected)
+        CheckBox isSelected;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -63,6 +66,14 @@ public class SelectDefultNumberAdapter extends RecyclerView.Adapter<SelectDefult
         DefultNumberData question = queriesList.get(position);
         holder.dialName.setText(CommonMethods.getValue(question.getCity()) + ", " + CommonMethods.getValue(question.getCountry()));
         holder.dialNumber.setText(CommonMethods.getValue(question.getNumber()));
+        holder.isSelected.setVisibility(View.VISIBLE);
+
+
+        if (CommonMethods.getValue(question.getNumber()).equals(PreferenceUtil.byDefultDailNumber().get())) {
+            holder.isSelected.setChecked(true);
+        } else {
+            holder.isSelected.setChecked(false);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

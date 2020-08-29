@@ -63,8 +63,7 @@
     <string name="VALEDATE_PASSWORD_NOT_MATCH">Your confirm password is not match.</string>
 
 
-
-    <string-array name="DialingCountryCode" >
+    <string-array name="DialingCountryCode">
         <item>32,BE</item>
         <item>501,BZ</item>
         <item>229,BJ</item>

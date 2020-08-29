@@ -126,6 +126,7 @@
                 android:background="@drawable/rectangle_solid"
                 android:padding="@dimen/_7sdp"
                 android:textColor="@color/white"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:textSize="@dimen/_11sdp"
                 android:textStyle="bold" />
 
@@ -133,6 +134,7 @@
                 android:id="@+id/dial_arrow"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:layout_gravity="center"
                 android:background="@drawable/rectangle_solid"
                 android:backgroundTint="@color/orange"
@@ -150,7 +152,7 @@
                 android:id="@+id/call_button"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_10sdp">
 
                 <androidx.appcompat.widget.AppCompatImageView

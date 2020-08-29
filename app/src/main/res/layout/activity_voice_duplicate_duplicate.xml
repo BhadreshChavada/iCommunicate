@@ -271,7 +271,7 @@
                             android:id="@+id/hold_action_fab"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_contacts_black_24dp"
+                            android:src="@drawable/ic_hold_call"
                             android:tint="@color/app_blue"
                             android:visibility="visible"
                             app:backgroundTint="@color/white" />
@@ -281,7 +281,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:text="Contact"
+                            android:text="Hold"
                             android:textColor="@color/app_blue"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="bold" />

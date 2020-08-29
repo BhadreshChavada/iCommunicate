@@ -22,4 +22,14 @@
         android:padding="@dimen/_2sdp"
         android:textColor="@color/app_blue"
         android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/dial_isSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center"
+        android:clickable="false"
+        android:gravity="center"
+        android:theme="@style/MyCheckBox"
+        android:visibility="gone" />
 </LinearLayout>
