@@ -43,10 +43,12 @@
 
     <string name="allow_communicaton">
     <ul>
-        <b>Allow iCommunicate</b>\n\n
-        - To make and receive calls.\n
-        - To access your contact list.\n
-        - To access photos, media and files on your device.\n
+        <b>iCommunicate. World would like to-</b>\n\n
+        <b>- Access Your Contacts. \n </b>
+          This will allow you to easily call and message people you have in your contacts. \n
+        <b>- Notification.\n</b>
+          Notification may include alerts,sound and icon badges.\n
+          These can be configure in Setting.
     </ul>
 </string>
     <string name="website_link">http://www.iCommunicate.com</string>

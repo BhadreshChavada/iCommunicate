@@ -317,42 +317,5 @@ public class FragmentKeypad extends BaseFragment {
         return contactName;
     }
 
-   /* void getNUmber() {
-        Filter filter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
 
-                FilterResults filterResults = new FilterResults();
-                if (constraint == null || constraint.length() == 0) {
-                    filterResults.count = itemsModelsl.size();
-                    filterResults.values = itemsModelsl;
-
-                } else {
-                    List<ContactBean> resultsModel = new ArrayList<>();
-                    String searchStr = constraint.toString().toLowerCase();
-
-                    for (ContactBean itemsModel : itemsModelsl) {
-                        if (itemsModel.getName().contains(searchStr) || itemsModel.getEmail().contains(searchStr)) {
-                            resultsModel.add(itemsModel);
-
-                        }
-                        filterResults.count = resultsModel.size();
-                        filterResults.values = resultsModel;
-                    }
-
-
-                }
-
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-
-//                itemsModelListFiltered = (List<ItemsModel>) results.values;
-//                notifyDataSetChanged();
-
-            }
-        };
-    }*/
 }

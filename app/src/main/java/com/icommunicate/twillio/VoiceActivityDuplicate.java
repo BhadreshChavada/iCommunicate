@@ -4,18 +4,25 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +30,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -52,6 +60,8 @@ import com.twilio.voice.RegistrationException;
 import com.twilio.voice.RegistrationListener;
 import com.twilio.voice.Voice;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -83,6 +93,8 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
     AppCompatTextView contactName;
     @BindView(R.id.record_action_fab)
     FloatingActionButton recordCall;
+    @BindView(R.id.userProfile)
+    ImageView userProfile;
 
     private String accessToken;
     private AudioManager audioManager;
@@ -219,6 +231,7 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
             }
             if (bundle.containsKey("phoneNumber")) {
                 txtPhoneNumber = bundle.getString("phoneNumber");
+                getUserPic(this, txtPhoneNumber);
                 if (txtPhoneNumber.startsWith("+")) {
 
                     params.put("to", txtPhoneNumber);
@@ -819,5 +832,49 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
                 });
     }
 
+
+    public void getUserPic(Context context, String number) {
+        ContentResolver contentResolver = context.getContentResolver();
+        String contactId = null;
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+
+        String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+        Cursor cursor =
+                contentResolver.query(
+                        uri,
+                        projection,
+                        null,
+                        null,
+                        null);
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            }
+            cursor.close();
+        }
+
+        Bitmap photo = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.ic_user_icon);
+
+        try {
+            if (contactId != null) {
+                InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(),
+                        ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(contactId)));
+
+                if (inputStream != null) {
+                    photo = BitmapFactory.decodeStream(inputStream);
+                    inputStream.close();
+                }
+
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        userProfile.setImageBitmap(photo);
+
+    }
 
 }

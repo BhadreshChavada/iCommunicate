@@ -57,6 +57,7 @@ public class FetchContacts extends AsyncTask<Void, Void, List<ContactBean>> {
 
                         emailCur.close();
 
+
                         contactList.add(new ContactBean(dummyId + "", contactName, contactNumber, "1", emailList, contactId, lookupId));
                         break;
                     }

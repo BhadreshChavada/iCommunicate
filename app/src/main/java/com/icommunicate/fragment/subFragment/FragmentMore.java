@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,7 +132,7 @@ public class FragmentMore extends BaseFragment {
 
     private void setUpArrayList() {
         settingBeans = new ArrayList<>();
-        settingBeans.add(new SettingBean("0", "Listen to Recorded Calls", "Phone Settings", R.drawable.ic_play_button));
+//        settingBeans.add(new SettingBean("0", "Listen to Recorded Calls", "Phone Settings", R.drawable.ic_play_button));
         settingBeans.add(new SettingBean("1", "Default Dial Numbers", "Phone Settings", R.drawable.ic_defualt_dial));
         settingBeans.add(new SettingBean("2", "Ringtone", "Phone Settings", R.drawable.ic_ringtone));
 
@@ -169,6 +170,7 @@ public class FragmentMore extends BaseFragment {
                             navigation.showNewCounterFragment(FragmentSettingDefultDialNumber.newInstance(getActivity(), "Default Dial Numbers", counter + 1));
                             break;
                         case "Ringtone":
+                            startActivityForResult(new Intent(Settings.ACTION_SOUND_SETTINGS), 0);
                             break;
                         case "Allow Notifications":
                             break;

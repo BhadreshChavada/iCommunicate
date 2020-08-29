@@ -99,7 +99,7 @@ public class CallHistoryAdapter extends RecyclerView.Adapter<CallHistoryAdapter.
         int minutes = (seconds % 3600) / 60;
         seconds = seconds % 60;
 
-        return twoDigitString(hours) + " : " + twoDigitString(minutes) + " : " + twoDigitString(seconds);
+        return twoDigitString(hours) + "h : " + twoDigitString(minutes) + "m : " + twoDigitString(seconds) + "s";
     }
 
     private String twoDigitString(int number) {

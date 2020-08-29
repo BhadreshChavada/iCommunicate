@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -22,14 +24,20 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.icommunicate.R;
+import com.icommunicate.adapterActions.SelectNumberCallbackCallback;
 import com.icommunicate.apiCall.ApiConstant;
 import com.icommunicate.bean.ContactBean;
 import com.icommunicate.bean.ContactDetailBean;
 import com.icommunicate.common.CommonMethods;
 import com.icommunicate.common.IntentUtils;
+import com.icommunicate.common.dailog.SelectContactNumberDailog;
 import com.icommunicate.twillio.VoiceActivityDuplicate;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -67,6 +75,8 @@ public class ContactDetailActivity extends AppCompatActivity {
     TextView email;
     @BindView(R.id.txtLocation)
     TextView location;
+    @BindView(R.id.userPic)
+    ImageView profilePic;
 
     String address = "";
 
@@ -100,16 +110,27 @@ public class ContactDetailActivity extends AppCompatActivity {
             contactBean = getIntent().getParcelableExtra(ApiConstant.CONTACT);
             contactName.setText(CommonMethods.getValue(contactBean.getName()));
             address = getAddress(contactBean.getLookupId());
+            getUserPic(contactBean.getLookupId());
+            HashMap<String, String> numbaerMap = getPhoneNumber(contactBean.getLookupId());
+            HashMap<String, String> emailMap = getEmail(contactBean.getLookupId());
+
+            List<String> contactList = new ArrayList<String>(numbaerMap.keySet());
+            contactBean.setNumbers(contactList);
+
+
+            List<String> emailList = new ArrayList<String>(emailMap.keySet());
+            contactBean.setEmail(emailList);
+
 
             ArrayList<ContactDetailBean> contactDetailBeanArrayList = new ArrayList<>();
-//            for (int i = 0; i < contactBean.getNumbers().size(); i++) {
-            contactDetailBeanArrayList.add(new ContactDetailBean(contactBean.getPhone_number(), "WORK", R.drawable.ic_call_black, R.drawable.ic_message_black));
-//            }
+            for (int i = 0; i < contactBean.getNumbers().size(); i++) {
+                contactDetailBeanArrayList.add(new ContactDetailBean(contactBean.getNumbers().get(i), numbaerMap.get(contactBean.getNumbers().get(i)), R.drawable.ic_call_black, R.drawable.ic_message_black));
+            }
 
             ArrayList<ContactDetailBean> emailDetailBeanArrayList = new ArrayList<>();
             for (int i = 0; i < contactBean.getEmail().size(); i++) {
                 email.setVisibility(View.VISIBLE);
-                emailDetailBeanArrayList.add(new ContactDetailBean(contactBean.getEmail().get(i), "WORK", R.drawable.ic_email_black, 0));
+                emailDetailBeanArrayList.add(new ContactDetailBean(contactBean.getEmail().get(i), emailMap.get(contactBean.getEmail().get(i)), R.drawable.ic_email_black, 0));
             }
 
             ArrayList<ContactDetailBean> companyBeanArrayList = new ArrayList<>();
@@ -188,11 +209,30 @@ public class ContactDetailActivity extends AppCompatActivity {
     @OnClick(R.id.txtEmail)
     public void emailClicked() {
 
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + contactBean.getEmail().get(0)));
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "Mail application not found", Toast.LENGTH_SHORT).show();
+        if (contactBean.getEmail().size() == 1) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + contactBean.getEmail().get(0)));
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "Mail application not found", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            SelectContactNumberDailog.show("Select Email", contactBean.getEmail(), getSupportFragmentManager(), new SelectNumberCallbackCallback() {
+                @Override
+                public void onClick(View view, int position) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + contactBean.getEmail().get(position)));
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(ContactDetailActivity.this, "Mail application not found", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onNo() {
+
+                }
+            });
         }
 
     }
@@ -200,20 +240,55 @@ public class ContactDetailActivity extends AppCompatActivity {
     @OnClick(R.id.txtCall)
     public void callClicked() {
 
-        Intent calling = new Intent(this, VoiceActivityDuplicate.class);
-        calling.putExtra("phoneNumber", contactBean.getPhone_number());
-        calling.putExtra("Name", contactBean.getName());
-        startActivity(calling);
+        if (contactBean.getNumbers().size() == 1) {
+
+            Intent calling = new Intent(this, VoiceActivityDuplicate.class);
+            calling.putExtra("phoneNumber", contactBean.getNumbers().get(0));
+            calling.putExtra("Name", contactBean.getName());
+            startActivity(calling);
+        } else {
+            SelectContactNumberDailog.show("Select Number", contactBean.getNumbers(), getSupportFragmentManager(), new SelectNumberCallbackCallback() {
+                @Override
+                public void onClick(View view, int position) {
+                    Intent calling = new Intent(ContactDetailActivity.this, VoiceActivityDuplicate.class);
+                    calling.putExtra("phoneNumber", contactBean.getNumbers().get(position));
+                    calling.putExtra("Name", contactBean.getName());
+                    startActivity(calling);
+                }
+
+                @Override
+                public void onNo() {
+
+                }
+            });
+        }
     }
+
 
     @OnClick(R.id.txtMessage)
     public void messageClicked() {
 
-        Intent intent = new Intent(this, MessageActivity.class);
-        intent.putExtra("phoneNumber", contactBean.getPhone_number());
+        if (contactBean.getNumbers().size() == 1) {
+            Intent intent = new Intent(ContactDetailActivity.this, MessageActivity.class);
+            intent.putExtra("phoneNumber", contactBean.getNumbers().get(0));
+            startActivity(intent);
+            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+        } else {
+            SelectContactNumberDailog.show("Select Number", contactBean.getNumbers(), getSupportFragmentManager(), new SelectNumberCallbackCallback() {
+                @Override
+                public void onClick(View view, int position) {
+                    Intent intent = new Intent(ContactDetailActivity.this, MessageActivity.class);
+                    intent.putExtra("phoneNumber", contactBean.getNumbers().get(position));
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                }
 
-        startActivity(intent);
-        overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                @Override
+                public void onNo() {
+
+                }
+            });
+        }
     }
 
     @OnClick(R.id.txtLocation)
@@ -297,5 +372,133 @@ public class ContactDetailActivity extends AppCompatActivity {
         }
         currAddr.close();
         return tempAddress.trim();
+    }
+
+    void getUserPic(String id) {
+        Uri URI_PHOTO = ContactsContract.Data.CONTENT_URI;
+        String SELECTION_PHOTO = ContactsContract.Data.LOOKUP_KEY
+                + " = ? AND " + ContactsContract.Data.MIMETYPE
+                + " = ?";
+        String[] SELECTION_ARRAY_PHOTO = new String[]{
+                id,
+                ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE};
+
+        Cursor currPhoto = this.getContentResolver().query(URI_PHOTO, null, SELECTION_PHOTO, SELECTION_ARRAY_PHOTO, null);
+        int indexPhoto = currPhoto.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO);
+
+        while (currPhoto.moveToNext()) {
+
+            byte[] photoByte = currPhoto.getBlob(indexPhoto);
+
+            if (photoByte != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(photoByte, 0, photoByte.length);
+
+                // Getting Caching directory
+                File cacheDirectory = this.getCacheDir();
+
+                // Temporary file to store the contact image
+                // File tmpFile = new File(cacheDirectory.getPath()
+                // + "/image_"+id+".png");
+                File tmpFile = new File(cacheDirectory.getPath() + "/image_.png");
+
+                // The FileOutputStream to the temporary file
+                try {
+                    FileOutputStream fOutStream = new FileOutputStream(tmpFile);
+
+                    // Writing the bitmap to the temporary file as png file
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOutStream);
+
+                    // Flush the FileOutputStream
+                    fOutStream.flush();
+
+                    // Close the FileOutputStream
+                    fOutStream.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                String photoPath = tmpFile.getPath();
+                contactBean.setProfile(photoPath);
+                profilePic.setImageBitmap(bitmap);
+            }
+        }
+        currPhoto.close();
+    }
+
+    HashMap<String, String> getPhoneNumber(String id) {
+        // Get Phone Number....(HashMap<Integer, String>phones)
+        Uri URI_PHONE = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String SELECTION_PHONE = ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY + " = ?";
+        String[] SELECTION_ARRAY_PHONE = new String[]{id};
+
+        Cursor currPhone = this.getContentResolver().query(URI_PHONE, null, SELECTION_PHONE, SELECTION_ARRAY_PHONE, null);
+        int indexPhoneNo = currPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+        int indexPhoneType = currPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+
+        HashMap<String, String> phoneMap = new HashMap<String, String>();
+        if (currPhone.getCount() > 0) {
+
+            while (currPhone.moveToNext()) {
+                String phoneNoStr = currPhone.getString(indexPhoneNo);
+                int phoneTypeStr = currPhone.getInt(indexPhoneType);
+                String type = "Home";
+
+
+                switch (phoneTypeStr) {
+                    case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+                        type = "Home";
+                        break;
+                    case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+                        type = "Mobile";
+                        break;
+                    case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+                        type = "Work";
+                        break;
+                }
+
+
+                phoneNoStr = phoneNoStr.replace(" ", "");
+                phoneMap.put(phoneNoStr, type);
+            }
+
+        }
+        currPhone.close();
+        return phoneMap;
+
+    }
+
+    HashMap<String, String> getEmail(String id) {
+        Uri URI_EMAIL = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
+        String SELECTION_EMAIL = ContactsContract.CommonDataKinds.Email.LOOKUP_KEY + " = ?";
+        String[] SELECTION_ARRAY_EMAIL = new String[]{id};
+
+        Cursor emailCur = this.getContentResolver().query(URI_EMAIL, null, SELECTION_EMAIL, SELECTION_ARRAY_EMAIL, null);
+        int indexEmail = emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+        int indexEmailType = emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE);
+        HashMap<String, String> emailMap = new HashMap<String, String>();
+        if (emailCur.getCount() > 0) {
+            while (emailCur.moveToNext()) {
+                // This would allow you get several email addresses,
+                // if the email addresses were stored in an array
+                String emailStr = emailCur.getString(indexEmail);
+                Integer emailTypeStr = emailCur.getInt(indexEmailType);
+                String type = "Other";
+                switch (emailTypeStr) {
+                    case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+                        type = "Home";
+                        break;
+                    case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+                        type = "Work";
+                        break;
+                }
+
+
+                emailMap.put(emailStr, type);
+            }
+
+
+        }
+        emailCur.close();
+        return emailMap;
     }
 }

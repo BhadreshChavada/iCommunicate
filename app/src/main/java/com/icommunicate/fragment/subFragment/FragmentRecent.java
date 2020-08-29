@@ -143,7 +143,7 @@ public class FragmentRecent extends BaseFragment {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Delete",
                         0,
-                        Color.parseColor("#FF9502"),
+                        Color.parseColor("#e86b17"),
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
@@ -177,7 +177,7 @@ public class FragmentRecent extends BaseFragment {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Message",
                         0,
-                        Color.parseColor("#C7C7CB"),
+                        Color.parseColor("#37bf51"),
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
@@ -191,7 +191,7 @@ public class FragmentRecent extends BaseFragment {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Call",
                         0,
-                        Color.parseColor("#FF9502"),
+                        Color.parseColor("#003a96"),
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
