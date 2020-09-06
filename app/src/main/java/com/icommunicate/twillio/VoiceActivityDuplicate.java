@@ -855,6 +855,7 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
             cursor.close();
         }
 
+
         Bitmap photo = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.ic_user_icon);
 
@@ -873,7 +874,11 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        userProfile.setImageBitmap(photo);
+        if (photo != null)
+            userProfile.setImageBitmap(photo);
+        else
+            userProfile.setImageResource(R.drawable.ic_user_icon);
+        
 
     }
 

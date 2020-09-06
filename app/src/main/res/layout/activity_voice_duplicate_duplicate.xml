@@ -96,7 +96,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1.2">
 
             <TableLayout
@@ -144,14 +144,13 @@
                         android:layout_height="@dimen/_70sdp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/hold_action_fab"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/white"
-                            android:src="@drawable/ic_keypad_icon"
+                            android:src="@drawable/ic_hold_call"
                             android:tint="@color/app_blue"
                             android:visibility="visible"
                             app:backgroundTint="@color/white" />
@@ -161,11 +160,13 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:text="Keypad"
+                            android:text="Hold"
                             android:textColor="@color/app_blue"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+
 
 
                     <LinearLayout
@@ -239,6 +240,34 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            android:src="@drawable/ic_keypad_icon"
+                            android:tint="@color/app_blue"
+                            android:visibility="visible"
+                            app:backgroundTint="@color/white" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="Keypad"
+                            android:textColor="@color/app_blue"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_70sdp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/record_action_fab"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -260,32 +289,7 @@
                     </LinearLayout>
 
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_70sdp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/hold_action_fab"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_hold_call"
-                            android:tint="@color/app_blue"
-                            android:visibility="visible"
-                            app:backgroundTint="@color/white" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:text="Hold"
-                            android:textColor="@color/app_blue"
-                            android:textSize="@dimen/_12sdp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
 
 
                 </TableRow>
