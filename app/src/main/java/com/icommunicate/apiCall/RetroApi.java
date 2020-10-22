@@ -68,7 +68,7 @@ public interface RetroApi {
 
     @POST("icoomunicate/users/callLogs")
     @Headers({"Content-Type: application/json"})
-    Call<ResponseBody> getCallLogs();
+    Call<ResponseBody> getCallLogs(@Body DefultNumberRequest defaultNumberRequest);
 
     @POST("icoomunicate/users//callLogsTwoNumber")
     @Headers({"Content-Type: application/json"})

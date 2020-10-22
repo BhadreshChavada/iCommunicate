@@ -51,6 +51,7 @@ import com.icommunicate.apiCall.IResult;
 import com.icommunicate.apiCall.requestCall.ApiCallRecords;
 import com.icommunicate.apiCall.requestModels.CallRecordingRequest;
 import com.icommunicate.common.IntentUtils;
+import com.icommunicate.common.preferences.PreferenceUtil;
 import com.koushikdutta.ion.Ion;
 import com.twilio.voice.Call;
 import com.twilio.voice.CallException;
@@ -244,6 +245,7 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
                     phoneNumber.setText(getCountryDialCode() + txtPhoneNumber);
                 }
 
+                params.put("from", PreferenceUtil.byDefultDailNumber().get());
                 ConnectOptions connectOptions = new ConnectOptions.Builder(accessToken)
                         .params(params)
                         .build();
@@ -815,7 +817,19 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
      * Get an access token from your Twilio access token server
      */
     private void retrieveAccessToken() {
-        Ion.with(this).load(TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + identity)
+        Bundle bundle = getIntent().getExtras();
+        String name = "";
+        if (bundle != null) {
+
+            if (bundle.containsKey("Name")) {
+                name = bundle.getString("Name");
+
+            } else {
+                name = phoneNumber.toString();
+            }
+        }
+
+        Ion.with(this).load(TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + name)
                 .asString()
                 .setCallback((e, accessToken) -> {
                     if (e == null) {

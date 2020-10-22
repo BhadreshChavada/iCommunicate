@@ -167,7 +167,8 @@
             android:layout_marginBottom="@dimen/_70sdp"
             android:gravity="center"
             android:padding="@dimen/_5sdp"
-            android:weightSum="4">
+            android:weightSum="4"
+            android:background="@color/cell_background">
 
             <TextView
                 android:id="@+id/txtMessage"
@@ -175,10 +176,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:background="@drawable/chat_header_green_bg"
+                android:background="@drawable/contact_detail_bg"
                 android:padding="@dimen/_5sdp"
                 android:drawableTop="@drawable/ic_message_black"
-                android:drawableTint="@color/orange"
                 android:gravity="center"
                 android:text="Message"
                 android:textColor="@color/app_blue" />
@@ -189,10 +189,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:background="@drawable/chat_header_green_bg"
+                android:background="@drawable/contact_detail_bg"
                 android:padding="@dimen/_5sdp"
                 android:drawableTop="@drawable/ic_call"
-                android:drawableTint="@color/orange"
                 android:gravity="center"
                 android:text="Call"
                 android:textColor="@color/app_blue" />
@@ -203,10 +202,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:background="@drawable/chat_header_green_bg"
+                android:background="@drawable/contact_detail_bg"
                 android:padding="@dimen/_5sdp"
                 android:drawableTop="@drawable/ic_email_black"
-                android:drawableTint="@color/orange"
                 android:gravity="center"
                 android:text="Mail"
                 android:textColor="@color/app_blue"
@@ -218,10 +216,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:background="@drawable/chat_header_green_bg"
+                android:background="@drawable/contact_detail_bg"
                 android:padding="@dimen/_5sdp"
                 android:drawableTop="@drawable/ic_location_on_black"
-                android:drawableTint="@color/orange"
                 android:gravity="center"
                 android:text="Location"
                 android:textColor="@color/app_blue"

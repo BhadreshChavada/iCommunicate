@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentClickListener;
@@ -55,6 +57,8 @@ public class FragmentRecent extends BaseFragment {
     @BindView(R.id.segmented_control)
     SegmentedControl segmentedControl;
     private RecentAdapter mAdapter;
+//    @BindView(R.id.ivDeleteAll)
+//    AppCompatImageView deleteAll;
 
     public FragmentRecent() {
     }
@@ -87,12 +91,46 @@ public class FragmentRecent extends BaseFragment {
             }
         });
         segmentedControl.setSelectedSegment(0);
+
+
         return root;
     }
 
     private void getMiscallList() {
 
     }
+
+    @OnClick(R.id.ivDeleteAll)
+    void deleteAllCall() {
+
+        for (int i = 0; i < mAdapter.getItemCount(); i++) {
+            int finalI = i;
+            ApiDeleteCallLogs apiDeleteLog = new ApiDeleteCallLogs(getActivity(), new IResult() {
+                @Override
+                public void notifySuccess(String requestType, Object response) {
+                    if (response instanceof SuccessResponse) {
+                        SuccessResponse successResponse = (SuccessResponse) response;
+                        if (successResponse.isError()) {
+                            Toast.makeText(getActivity(), "" + successResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            mAdapter.remove(finalI);
+                            Toast.makeText(getActivity(), successResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                }
+
+                @Override
+                public void notifyNetworkSuccess(String requestType) {
+
+                }
+            });
+            DeleteCallLogRequest deleteCallLogRequest = new DeleteCallLogRequest();
+            deleteCallLogRequest.setCallId(recentItemArrayList.get(finalI).getsID());
+            apiDeleteLog.execute(deleteCallLogRequest);
+        }
+    }
+
 
     @Override
     public void onResume() {
@@ -207,9 +245,9 @@ public class FragmentRecent extends BaseFragment {
         swipeHelper.attachToRecyclerView(recentRecycle);
     }
 
-
+    ArrayList<RecentItem> recentItemArrayList = new ArrayList<>();
     private void callCallRecordApi() {
-        ArrayList<RecentItem> recentItemArrayList = new ArrayList<>();
+
         ApiCallLogs apiGetCallRecords = new ApiCallLogs(getContext(), new IResult() {
             @Override
             public void notifySuccess(String requestType, Object response) {

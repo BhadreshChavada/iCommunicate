@@ -10,9 +10,11 @@ import com.icommunicate.R;
 import com.icommunicate.apiCall.IResult;
 import com.icommunicate.apiCall.RetroApi;
 import com.icommunicate.apiCall.ServiceGeneratorRetro;
+import com.icommunicate.apiCall.requestModels.DefultNumberRequest;
 import com.icommunicate.apiCall.responseModels.CallRecordResponse;
 import com.icommunicate.common.CommonMethods;
 import com.icommunicate.common.KLog;
+import com.icommunicate.common.preferences.PreferenceUtil;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -43,8 +45,10 @@ public class ApiCallLogs {
             dialog.show();
 
             final Gson gson = new GsonBuilder().create();
+            DefultNumberRequest request = new DefultNumberRequest();
+            request.setUserId(PreferenceUtil.loginUserData().get().getId());
 
-            Call<ResponseBody> responseBodyCall = retroApi.getCallLogs();
+            Call<ResponseBody> responseBodyCall = retroApi.getCallLogs(request);
             responseBodyCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
