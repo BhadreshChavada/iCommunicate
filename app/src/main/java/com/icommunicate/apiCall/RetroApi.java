@@ -10,6 +10,7 @@ import com.icommunicate.apiCall.requestModels.LoginRequest;
 import com.icommunicate.apiCall.requestModels.ResetPasswordRequest;
 import com.icommunicate.apiCall.requestModels.SendMessageRequest;
 import com.icommunicate.apiCall.requestModels.UpdateWorkingHourRequest;
+import com.icommunicate.apiCall.responseModels.CallTokenModel;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -17,6 +18,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Ashish parmar
@@ -39,6 +41,10 @@ public interface RetroApi {
     @GET("/callRecord.php")
     @Headers({"Content-Type: application/json"})
     Call<ResponseBody> getCallRecord();
+
+    @GET("/accessToken1.php?")
+    Call<CallTokenModel> retriveToken(@Query("identity") String name);
+
 
     @POST("/icoomunicate/users/callRecording")
     @Headers({"Content-Type: application/json"})
