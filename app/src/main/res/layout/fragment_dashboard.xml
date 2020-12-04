@@ -66,14 +66,23 @@
 
         </LinearLayout>
 
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+
 
             <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
                 android:id="@+id/recyclerview_contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtNoData"
@@ -87,6 +96,9 @@
                 android:visibility="gone" />
 
         </FrameLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     </LinearLayout>
 </LinearLayout>

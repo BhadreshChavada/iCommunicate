@@ -27,6 +27,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.google.common.collect.ArrayListMultimap;
@@ -82,6 +83,8 @@ public class FragmentContacts extends BaseFragment {
     //https://github.com/SimpleMobileTools/Simple-Contacts
     final public static String TAG = FragmentContacts.class.getName();
     protected View root;
+    SwipeRefreshLayout swipe_refresh;
+
     @BindView(R.id.action_bar_title)
     AppCompatTextView actionBarTitle;
     ContactAdepter contactAdepter;
@@ -119,6 +122,18 @@ public class FragmentContacts extends BaseFragment {
         ButterKnife.bind(this, root);
         getBundleArguments();
         setUpSearch();
+        swipe_refresh = (SwipeRefreshLayout)root.findViewById(R.id.swipe_container);
+
+
+
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Loading more data..
+                setUpAllContact();
+            }
+        });
+
         segmentedControl.addOnSegmentClickListener(new OnSegmentClickListener() {
             @Override
             public void onSegmentClick(SegmentViewHolder segmentViewHolder) {
@@ -239,6 +254,7 @@ public class FragmentContacts extends BaseFragment {
                     return s1.getName().compareToIgnoreCase(s2.getName());
                 }
             });
+            swipe_refresh.setRefreshing(false);
             setContactAdapter(contactBeans);
 
 
@@ -262,6 +278,7 @@ public class FragmentContacts extends BaseFragment {
                     setContactAdapter(contactBeans);
                 }
             }).execute();
+
         }
     }
 

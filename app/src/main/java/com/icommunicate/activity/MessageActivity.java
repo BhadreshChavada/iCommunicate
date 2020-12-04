@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.google.common.collect.ArrayListMultimap;
@@ -56,6 +57,7 @@ import butterknife.OnClick;
 
 public class MessageActivity extends AppCompatActivity {
 
+    SwipeRefreshLayout swipe_refresh;
     @BindView(R.id.action_bar_title)
     AppCompatTextView actionBarTitle;
     @BindView(R.id.recycler_view_chat)
@@ -77,6 +79,18 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_main_layout);
         ButterKnife.bind(this);
+
+        swipe_refresh = (SwipeRefreshLayout)this.findViewById(R.id.swipe_container);
+
+
+
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Loading more data..
+                callFetchMessage();
+            }
+        });
 
 
     }
@@ -255,6 +269,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
         apiTwilioSendMessage.execute(sendMessageRequest);
+        swipe_refresh.setRefreshing(false);
     }
 
     private void callFetchMessage() {
@@ -280,6 +295,8 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
         apiTwilioFetchMessage.execute(fetchMessageRequest);
+        swipe_refresh.setRefreshing(false);
+
     }
 
 

@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.icommunicate.R;
 import com.icommunicate.activity.CallDetailsActivity;
@@ -48,6 +49,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 
 public class FragmentRecent extends BaseFragment {
 
+    SwipeRefreshLayout swipe_refresh;
     final public static String TAG = FragmentRecent.class.getName();
     protected View root;
     @BindView(R.id.action_bar_title)
@@ -80,6 +82,20 @@ public class FragmentRecent extends BaseFragment {
         root = inflater.inflate(R.layout.fragment_recent, container, false);
         ButterKnife.bind(this, root);
         getBundleArguments();
+
+        swipe_refresh = (SwipeRefreshLayout)root.findViewById(R.id.swipe_container);
+
+
+
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Loading more data..
+                callCallRecordApi();
+            }
+        });
+
+
         segmentedControl.addOnSegmentClickListener(new OnSegmentClickListener() {
             @Override
             public void onSegmentClick(SegmentViewHolder segmentViewHolder) {
@@ -272,6 +288,7 @@ public class FragmentRecent extends BaseFragment {
                             }
                         }
                     }
+                    swipe_refresh.setRefreshing(false);
                     setUpListing(recentItemArrayList);
                 }
 
