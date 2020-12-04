@@ -200,7 +200,7 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        actionBarTitle.setText("Dailing");
+        actionBarTitle.setText("Dialing");
         registerReceiver();
     }
 
