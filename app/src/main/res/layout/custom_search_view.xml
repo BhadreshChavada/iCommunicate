@@ -28,7 +28,7 @@
             android:hint="Search"
             android:textColor="@color/dark_gray"
             android:textColorHint="@color/dark_gray"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_12sdp" />
 
 
     </LinearLayout>
