@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.icommunicate.R;
 import com.icommunicate.activity.MessageActivity;
@@ -46,6 +47,7 @@ import butterknife.ButterKnife;
 
 public class FragmentMessage extends BaseFragment {
 
+    SwipeRefreshLayout swipe_refresh;
     final public static String TAG = FragmentMessage.class.getName();
     protected View root;
     @BindView(R.id.action_bar_title)
@@ -76,6 +78,19 @@ public class FragmentMessage extends BaseFragment {
         root = inflater.inflate(R.layout.fragment_message_list, container, false);
         ButterKnife.bind(this, root);
         getBundleArguments();
+
+        swipe_refresh = (SwipeRefreshLayout)root.findViewById(R.id.swipe_container);
+
+
+
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Loading more data..
+                callFetchMessage();
+            }
+        });
+
         return root;
     }
 
@@ -153,6 +168,7 @@ public class FragmentMessage extends BaseFragment {
                             messageItemList.add(new MessageItem(fetchMessageItem.getTo(), fetchMessageItem.getBody(), fetchMessageItem.getDateSent().getDate()));
                         }
                         messageItemList = messageItemList.stream().filter(distinctByKey(MessageItem::getContactName)).collect(Collectors.toList());
+                        swipe_refresh.setRefreshing(false);
                         setUpAdapter(messageItemList);
                     }
 

@@ -61,6 +61,8 @@ public class FragmentRecent extends BaseFragment {
     private RecentAdapter mAdapter;
 //    @BindView(R.id.ivDeleteAll)
 //    AppCompatImageView deleteAll;
+    private Integer segmentCheck  = 0;
+
 
     public FragmentRecent() {
     }
@@ -87,26 +89,36 @@ public class FragmentRecent extends BaseFragment {
 
 
 
-        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Loading more data..
-                callCallRecordApi();
-            }
-        });
 
 
         segmentedControl.addOnSegmentClickListener(new OnSegmentClickListener() {
             @Override
             public void onSegmentClick(SegmentViewHolder segmentViewHolder) {
                 if (segmentViewHolder.getColumn() == 0) {
+                    segmentCheck = segmentViewHolder.getColumn();
                     callCallRecordApi();
                 } else if (segmentViewHolder.getColumn() == 1) {
+                    segmentCheck = segmentViewHolder.getColumn();
                     getMiscallList();
                 }
             }
         });
         segmentedControl.setSelectedSegment(0);
+
+
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Loading more data..
+                if(segmentCheck == 0){
+                    callCallRecordApi();
+                }else{
+                    getMiscallList();
+                }
+
+            }
+        });
+
 
 
         return root;
