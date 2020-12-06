@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
@@ -49,10 +50,10 @@ import com.icommunicate.BuildConfig;
 import com.icommunicate.R;
 import com.icommunicate.apiCall.IResult;
 import com.icommunicate.apiCall.requestCall.ApiCallRecords;
+import com.icommunicate.apiCall.requestCall.ApiRetriveToken;
 import com.icommunicate.apiCall.requestModels.CallRecordingRequest;
 import com.icommunicate.common.IntentUtils;
 import com.icommunicate.common.preferences.PreferenceUtil;
-import com.koushikdutta.ion.Ion;
 import com.twilio.voice.Call;
 import com.twilio.voice.CallException;
 import com.twilio.voice.CallInvite;
@@ -82,7 +83,7 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
      *
      * For example : https://myurl.io/accessToken.php
      */
-    private static final String TWILIO_ACCESS_TOKEN_SERVER_URL = "http://icommunicate.electromech.ie/accessToken.php";
+
 //    private static final String TWILIO_ACCESS_TOKEN_SERVER_URL = "http://3fb84be0.ngrok.io/accessToken.php";
 
     private static final int MIC_PERMISSION_REQUEST_CODE = 1;
@@ -130,6 +131,11 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
         setContentView(R.layout.activity_voice_duplicate_duplicate);
         ButterKnife.bind(this);
 
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new
+                    StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         // These flags ensure that the activity can be launched when the screen is locked.
         Window window = getWindow();
@@ -829,21 +835,29 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
             }
         }
 
-        Ion.with(this).load(TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + name)
-                .asString()
-                .setCallback((e, accessToken) -> {
-                    if (e == null) {
-                        Log.d(TAG, "Access token: " + accessToken);
-                        VoiceActivityDuplicate.this.accessToken = accessToken;
-                        registerForCallInvites();
-                        getIntentExtras();
+        if (name.contains(" ")) {
+            name = name.replace(" ", "");
+        }
+        name = name.replaceAll("[^a-zA-Z0-9]", "");
 
-                    } else {
-                        Snackbar.make(coordinatorLayout,
-                                "Error retrieving access token. Unable to make calls",
-                                Snackbar.LENGTH_LONG).show();
-                    }
-                });
+
+        ApiRetriveToken apiLogin = new ApiRetriveToken(VoiceActivityDuplicate.this, new IResult() {
+            @Override
+            public void notifySuccess(String requestType, Object response) {
+
+                VoiceActivityDuplicate.this.accessToken = response.toString();
+                registerForCallInvites();
+                getIntentExtras();
+            }
+
+            @Override
+            public void notifyNetworkSuccess(String requestType) {
+
+            }
+        });
+
+        apiLogin.execute(name);
+
     }
 
 
@@ -892,8 +906,40 @@ public class VoiceActivityDuplicate extends AppCompatActivity {
             userProfile.setImageBitmap(photo);
         else
             userProfile.setImageResource(R.drawable.ic_user_icon);
-        
+
 
     }
+
+//    public void testKeys() throws Exception {
+//        KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+//        KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+//
+//        ks.load(this.getResources().openRawResource(R.raw.keystore), "storepass".toCharArray());
+//        kmf.init(ks, "storepass".toCharArray());
+//
+//
+//        TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+//        KeyStore ts = KeyStore.getInstance(KeyStore.getDefaultType());
+//        ts.load(this.getResources().openRawResource(R.raw.keystore), "storepass".toCharArray());
+//        tmf.init(ts);
+//
+//        SSLContext sslContext = SSLContext.getInstance("TLS");
+//        sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+//
+//        AsyncHttpServer httpServer = new AsyncHttpServer();
+//        httpServer.listenSecure(8888, sslContext);
+//        httpServer.get("/", new HttpServerRequestCallback() {
+//            @Override
+//            public void onRequest(AsyncHttpServerRequest request, AsyncHttpServerResponse response) {
+//                response.send("hello");
+//            }
+//        });
+//
+//        Thread.sleep(1000);
+//
+//        AsyncHttpClient.getDefaultInstance().getSSLSocketMiddleware().setSSLContext(sslContext);
+//        AsyncHttpClient.getDefaultInstance().getSSLSocketMiddleware().setTrustManagers(tmf.getTrustManagers());
+//        AsyncHttpClient.getDefaultInstance().executeString(new AsyncHttpGet("https://localhost:8888/"), null).get();
+//    }
 
 }

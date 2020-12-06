@@ -48,7 +48,6 @@
                 android:paddingRight="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_7sdp"
                 android:singleLine="true"
-                android:text="test1@gmail.com"
                 android:textColor="@color/app_blue"
                 android:textColorHint="#30170846" />
         </LinearLayout>
@@ -63,7 +62,6 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/login_password"
-                android:text="123"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
@@ -117,6 +115,7 @@
         android:backgroundTint="@color/white"
         android:drawableTint="@color/orange"
         android:gravity="center"
+        android:visibility="gone"
         android:textColor="@color/app_blue" />
 
 </FrameLayout>

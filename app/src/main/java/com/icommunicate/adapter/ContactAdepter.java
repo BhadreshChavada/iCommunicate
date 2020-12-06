@@ -1,7 +1,13 @@
 package com.icommunicate.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +20,13 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderHandler;
 import com.icommunicate.R;
 import com.icommunicate.adapterActions.ContactListner;
 import com.icommunicate.bean.ContactBean;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +80,8 @@ public class ContactAdepter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void configureOther(OtherViewHolder holder, int position) {
         holder.txtUserName.setText(queriesList.get(position).getName());
+        Log.d("Images", queriesList.get(position).getProfile());
+        holder.imgUserImage.setImageBitmap(getUserPic(queriesList.get(position).getLookupId()));
         if (position != queriesList.size() - 1) {
             if (TextUtils.equals(queriesList.get(position + 1).getId(), "100022")) {
                 holder.devider.setVisibility(View.GONE);
@@ -252,4 +261,60 @@ public class ContactAdepter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    Bitmap getUserPic(String id) {
+        Bitmap picMap = null;
+        Uri URI_PHOTO = ContactsContract.Data.CONTENT_URI;
+        String SELECTION_PHOTO = ContactsContract.Data.LOOKUP_KEY
+                + " = ? AND " + ContactsContract.Data.MIMETYPE
+                + " = ?";
+        String[] SELECTION_ARRAY_PHOTO = new String[]{
+                id,
+                ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE};
+
+        Cursor currPhoto = mContext.getContentResolver().query(URI_PHOTO, null, SELECTION_PHOTO, SELECTION_ARRAY_PHOTO, null);
+        int indexPhoto = currPhoto.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO);
+
+        while (currPhoto.moveToNext()) {
+
+            byte[] photoByte = currPhoto.getBlob(indexPhoto);
+
+            if (photoByte != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(photoByte, 0, photoByte.length);
+
+                // Getting Caching directory
+                File cacheDirectory = mContext.getCacheDir();
+
+                // Temporary file to store the contact image
+                // File tmpFile = new File(cacheDirectory.getPath()
+                // + "/image_"+id+".png");
+                File tmpFile = new File(cacheDirectory.getPath() + "/image_.png");
+
+                // The FileOutputStream to the temporary file
+                try {
+                    FileOutputStream fOutStream = new FileOutputStream(tmpFile);
+
+                    // Writing the bitmap to the temporary file as png file
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOutStream);
+
+                    // Flush the FileOutputStream
+                    fOutStream.flush();
+
+                    // Close the FileOutputStream
+                    fOutStream.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                String photoPath = tmpFile.getPath();
+//                contactBean.setProfile(photoPath);
+//                profilePic.setImageBitmap(bitmap);
+//                return bitmap;
+                picMap = bitmap;
+            }
+
+        }
+        currPhoto.close();
+
+        return picMap;
+    }
 }

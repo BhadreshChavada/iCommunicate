@@ -246,7 +246,7 @@ public class FragmentContacts extends BaseFragment {
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
         ArrayList<ContactBean> contactList = new Gson().fromJson(sharedpreferences.getString("Contact", null), new TypeToken<ArrayList<ContactBean>>() {
         }.getType());
-        if (contactList != null) {
+        if (contactList != null && contactList.size() > 0) {
             contactBeans.addAll(contactList);
             Collections.sort(contactBeans, new Comparator<ContactBean>() {
                 @Override
