@@ -39,14 +39,14 @@ public class LoginData{
 
 	@SerializedName("working_hours")
 	@JsonField(name ="working_hours")
-	private String working_hours;
+	private Integer working_hours;
 
 
-	public String getWorking_hours() {
-		return working_hours;
+	public Integer getWorking_hours() {
+		return Integer.valueOf(working_hours);
 	}
 
-	public void setWorking_hours(String working_hours) {
+	public void setWorking_hours(Integer working_hours) {
 		this.working_hours = working_hours;
 	}
 

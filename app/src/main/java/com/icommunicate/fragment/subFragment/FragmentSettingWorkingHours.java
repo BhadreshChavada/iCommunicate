@@ -144,65 +144,71 @@ public class FragmentSettingWorkingHours extends BaseFragment {
     }
 
     private void setUpView() {
-        if (PreferenceUtil.loginUserData().get() != null && !CommonMethods.getValue(PreferenceUtil.loginUserData().get().getWorking_hours()).isEmpty()) {
-            if (!CommonMethods.getValue(PreferenceUtil.loginUserData().get().getWorking_hours()).isEmpty()) {
+        if (PreferenceUtil.loginUserData().get() != null && CommonMethods.getValue(PreferenceUtil.loginUserData().get().getWorking_hours()) == null) {
+            if (CommonMethods.getValue(PreferenceUtil.loginUserData().get().getWorking_hours()) != null) {
                 Type type = new TypeToken<ArrayList<HoursPojo>>() {
                 }.getType();
-                List<HoursPojo> layerItems = new Gson().fromJson(PreferenceUtil.loginUserData().get().getWorking_hours(), type);
+                List<HoursPojo> layerItems = new Gson().fromJson(PreferenceUtil.loginUserData().get().getWorking_hours().toString(), type);
                 if (layerItems != null && layerItems.size() > 0) {
                     for (int i = 0; i < layerItems.size(); i++) {
                         HoursPojo hoursPojo = layerItems.get(i);
-                        switch (i) {
-                            case 0:
-                                sundayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
-                                sundayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
-                                isSunday.setChecked(hoursPojo.getIsDayoff());
-                                setUpTextView(sundayFromCalendar, sundaySelectFromTime);
-                                setUpTextView(sundayToCalendar, sundaySelectToTime);
-                                break;
-                            case 1:
-                                mondayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
-                                mondayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
-                                isMonday.setChecked(hoursPojo.getIsDayoff());
-                                setUpTextView(mondayFromCalendar, mondaySelectFromTime);
-                                setUpTextView(mondayToCalendar, mondaySelectToTime);
-                                break;
-                            case 2:
-                                wednesdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
-                                wednesdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
-                                isWednesday.setChecked(hoursPojo.getIsDayoff());
-                                setUpTextView(wednesdayFromCalendar, wednesdaySelectFromTime);
-                                setUpTextView(wednesdayToCalendar, wednesdaySelectToTime);
-                                break;
-                            case 3:
-                                tuesdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
-                                tuesdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
-                                isTuesday.setChecked(hoursPojo.getIsDayoff());
-                                setUpTextView(tuesdayFromCalendar, tuesdaySelectFromTime);
-                                setUpTextView(tuesdayToCalendar, tuesdaySelectToTime);
-                                break;
-                            case 4:
-                                thursdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
-                                thursdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
-                                isThursday.setChecked(hoursPojo.getIsDayoff());
-                                setUpTextView(thursdayFromCalendar, thursdaySelectFromTime);
-                                setUpTextView(thursdayToCalendar, thursdaySelectToTime);
-                                break;
-                            case 5:
-                                firdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
-                                firdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
-                                isFriday.setChecked(hoursPojo.getIsDayoff());
-                                setUpTextView(firdayFromCalendar, fridaySelectFromTime);
-                                setUpTextView(firdayToCalendar, fridaySelectToTime);
-                                break;
-                            case 6:
-                                saturdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
-                                saturdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
-                                isSaturday.setChecked(hoursPojo.getIsDayoff());
-                                setUpTextView(saturdayFromCalendar, saturdaySelectFromTime);
-                                setUpTextView(saturdayToCalendar, saturdaySelectToTime);
-                                break;
+
+                        try {
+                            switch (i) {
+                                case 0:
+                                    sundayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
+                                    sundayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
+                                    isSunday.setChecked(hoursPojo.getIsDayoff());
+                                    setUpTextView(sundayFromCalendar, sundaySelectFromTime);
+                                    setUpTextView(sundayToCalendar, sundaySelectToTime);
+                                    break;
+                                case 1:
+                                    mondayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
+                                    mondayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
+                                    isMonday.setChecked(hoursPojo.getIsDayoff());
+                                    setUpTextView(mondayFromCalendar, mondaySelectFromTime);
+                                    setUpTextView(mondayToCalendar, mondaySelectToTime);
+                                    break;
+                                case 2:
+                                    wednesdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
+                                    wednesdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
+                                    isWednesday.setChecked(hoursPojo.getIsDayoff());
+                                    setUpTextView(wednesdayFromCalendar, wednesdaySelectFromTime);
+                                    setUpTextView(wednesdayToCalendar, wednesdaySelectToTime);
+                                    break;
+                                case 3:
+                                    tuesdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
+                                    tuesdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
+                                    isTuesday.setChecked(hoursPojo.getIsDayoff());
+                                    setUpTextView(tuesdayFromCalendar, tuesdaySelectFromTime);
+                                    setUpTextView(tuesdayToCalendar, tuesdaySelectToTime);
+                                    break;
+                                case 4:
+                                    thursdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
+                                    thursdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
+                                    isThursday.setChecked(hoursPojo.getIsDayoff());
+                                    setUpTextView(thursdayFromCalendar, thursdaySelectFromTime);
+                                    setUpTextView(thursdayToCalendar, thursdaySelectToTime);
+                                    break;
+                                case 5:
+                                    firdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
+                                    firdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
+                                    isFriday.setChecked(hoursPojo.getIsDayoff());
+                                    setUpTextView(firdayFromCalendar, fridaySelectFromTime);
+                                    setUpTextView(firdayToCalendar, fridaySelectToTime);
+                                    break;
+                                case 6:
+                                    saturdayFromCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getFrom()));
+                                    saturdayToCalendar.setTimeInMillis(Long.parseLong(hoursPojo.getTo()));
+                                    isSaturday.setChecked(hoursPojo.getIsDayoff());
+                                    setUpTextView(saturdayFromCalendar, saturdaySelectFromTime);
+                                    setUpTextView(saturdayToCalendar, saturdaySelectToTime);
+                                    break;
+                            }
+                        }catch (Exception e){
+                         e.printStackTrace();
                         }
+
                     }
                 }
             }
@@ -326,7 +332,7 @@ public class FragmentSettingWorkingHours extends BaseFragment {
                     if (!numberResponse.isError()) {
                         Toast.makeText(getActivity(), "" + numberResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         LoginData loginData = PreferenceUtil.loginUserData().get();
-                        loginData.setWorking_hours(workingHours);
+                        loginData.setWorking_hours(Integer.valueOf(workingHours.toString()));
                         PreferenceUtil.loginUserData().set(loginData);
                         new Handler().postDelayed(new Runnable() {
                             @Override

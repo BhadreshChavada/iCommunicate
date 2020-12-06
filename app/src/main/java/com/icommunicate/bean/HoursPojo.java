@@ -59,6 +59,7 @@ public class HoursPojo {
 
     public boolean getIsDayoff() {
         return isDayoff;
+
     }
 
     public void setIsDayoff(boolean isDayoff) {
