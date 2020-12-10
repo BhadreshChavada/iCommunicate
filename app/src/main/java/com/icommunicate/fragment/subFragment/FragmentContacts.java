@@ -83,6 +83,7 @@ public class FragmentContacts extends BaseFragment {
     //https://github.com/SimpleMobileTools/Simple-Contacts
     final public static String TAG = FragmentContacts.class.getName();
     protected View root;
+
     SwipeRefreshLayout swipe_refresh;
 
     @BindView(R.id.action_bar_title)

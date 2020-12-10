@@ -49,8 +49,6 @@ public class FragmentSettingWorkingHours extends BaseFragment {
     AppCompatTextView actionBarTitle;
 
 
-
-
     @BindView(R.id.title)
     LinearLayout title;
     final Calendar sundayFromCalendar = Calendar.getInstance();
