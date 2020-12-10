@@ -27,6 +27,7 @@
                 android:weightSum=".75">
 
 
+
                 <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
                     android:id="@+id/segmented_control"
                     android:layout_width="0dp"
@@ -45,6 +46,8 @@
                     app:textVerticalPadding="@dimen/_6sdp"
                     app:unSelectedBackgroundColor="@color/app_blue"
                     app:unSelectedTextColor="@color/white" />
+
+
 
             </LinearLayout>
 

@@ -48,6 +48,7 @@ import butterknife.ButterKnife;
 public class FragmentMessage extends BaseFragment {
 
     SwipeRefreshLayout swipe_refresh;
+
     final public static String TAG = FragmentMessage.class.getName();
     protected View root;
     @BindView(R.id.action_bar_title)

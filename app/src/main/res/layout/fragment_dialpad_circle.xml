@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_120sdp" />
 
+
+
     <com.sample.android.padlayout.PadLayout
         android:id="@+id/padLayout"
         style="@style/PadLayoutStyle"

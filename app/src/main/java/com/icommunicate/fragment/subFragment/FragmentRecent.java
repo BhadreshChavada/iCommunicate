@@ -50,6 +50,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 public class FragmentRecent extends BaseFragment {
 
     SwipeRefreshLayout swipe_refresh;
+
     final public static String TAG = FragmentRecent.class.getName();
     protected View root;
     @BindView(R.id.action_bar_title)

@@ -145,6 +145,8 @@ public class FragmentSettingWorkingHours extends BaseFragment {
     }
 
     private void setUpView() {
+
+
         if (PreferenceUtil.loginUserData().get() != null && CommonMethods.getValue(PreferenceUtil.loginUserData().get().getWorking_hours()) == null) {
             if (CommonMethods.getValue(PreferenceUtil.loginUserData().get().getWorking_hours()) != null) {
                 Type type = new TypeToken<ArrayList<HoursPojo>>() {
