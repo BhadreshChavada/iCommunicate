@@ -81,7 +81,11 @@ public class ContactAdepter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void configureOther(OtherViewHolder holder, int position) {
         holder.txtUserName.setText(queriesList.get(position).getName());
         Log.d("Images", queriesList.get(position).getProfile());
-        holder.imgUserImage.setImageBitmap(getUserPic(queriesList.get(position).getLookupId()));
+        if (getUserPic(queriesList.get(position).getLookupId()) != null)
+            holder.imgUserImage.setImageBitmap(getUserPic(queriesList.get(position).getLookupId()));
+        else {
+            holder.imgUserImage.setImageResource(R.drawable.ic_user_icon);
+        }
         if (position != queriesList.size() - 1) {
             if (TextUtils.equals(queriesList.get(position + 1).getId(), "100022")) {
                 holder.devider.setVisibility(View.GONE);

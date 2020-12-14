@@ -1,6 +1,5 @@
 package com.icommunicate.bean;
 
-import com.bluelinelabs.logansquare.annotation.JsonField;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -23,12 +22,10 @@ public class HoursPojo {
 
     @SerializedName("isDayoff")
     @Expose
-    private boolean isDayoff;
+    private Boolean isDayoff;
 
 
-
-
-    public HoursPojo(String day, String from, String to, boolean isDayoff) {
+    public HoursPojo(String day, String from, String to, Boolean isDayoff) {
         this.day = day;
         this.from = from;
         this.to = to;
@@ -59,12 +56,12 @@ public class HoursPojo {
         this.to = to;
     }
 
-    public boolean getIsDayoff() {
+    public Boolean getIsDayoff() {
         return isDayoff;
 
     }
 
-    public void setIsDayoff(boolean isDayoff) {
+    public void setIsDayoff(Boolean isDayoff) {
         this.isDayoff = isDayoff;
     }
 }
